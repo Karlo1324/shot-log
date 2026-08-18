@@ -151,10 +151,10 @@ select.glass-input option {
 <div class="fixed top-1/3 -right-48 w-[34rem] h-[34rem] rounded-full bg-white/[.025] blur-[140px] pointer-events-none"></div>
 <div class="fixed bottom-[-18rem] left-1/3 w-[30rem] h-[30rem] rounded-full bg-white/[.02] blur-[130px] pointer-events-none"></div>
 
-<main class="relative z-10 w-full max-w-6xl mx-auto space-y-6">
+<main class="relative z-10 max-w-4xl mx-auto space-y-6">
 
   <!-- Header -->
-  <header class="glass rounded-3xl px-5 py-4 flex flex-wrap justify-between items-center gap-3">
+  <header class="glass rounded-3xl px-5 py-4 flex justify-between items-center">
     <div class="flex items-center gap-3">
       <img src="logo.png" alt="ShotLog Logo"
            class="w-11 h-11 rounded-2xl border border-white/10 object-cover">
@@ -162,9 +162,6 @@ select.glass-input option {
       <div>
         <h1 class="text-xl font-light tracking-wide">
           Shot<span class="font-bold">Log</span>
-          <p class="text-[11px] text-zinc-400">
-    By Karlo O. Famoso
-</p>
         </h1>
         <p id="userGreeting" class="text-[11px] text-zinc-400">
           Backup Overview
@@ -173,6 +170,7 @@ select.glass-input option {
     </div>
 
     <div class="flex items-center gap-2">
+      <span id="accessBadge" class="inline-flex text-[8px] tracking-[.16em] uppercase px-2.5 py-1.5 rounded-full glass-soft text-zinc-500"></span>
       <a href="index.html"
          class="text-[9px] tracking-[.18em] uppercase px-3 py-1.5 rounded-full glass-soft text-zinc-400 hover:text-white transition">
         Back
@@ -185,8 +183,8 @@ select.glass-input option {
     </div>
   </header>
 
-  <!-- Backup Overview -->
-  <section class="glass rounded-3xl p-5 md:p-6 animate-fade-in">
+  <!-- Add / Edit Event -->
+  <section id="eventEditorPanel" class="glass rounded-3xl p-5 md:p-6 animate-fade-in">
 
     <div class="flex items-center justify-between gap-4 mb-5">
       <div>
@@ -248,6 +246,8 @@ select.glass-input option {
           <label class="form-field-label">Backup Status</label>
           <select id="status"
                   class="glass-input w-full rounded-xl px-4 py-3 sm:py-3.5 text-sm focus:outline-none transition">
+            <option value="Upcoming">📅 Upcoming</option>
+            <option value="Event Ongoing">🎥 Event Ongoing</option>
             <option value="Shot" selected>⚠️ Needs Backup</option>
             <option value="Backup In Progress">⏳ Backup In Progress</option>
             <option value="Backed Up">✅ Backed Up</option>
@@ -418,7 +418,7 @@ select.glass-input option {
 
   </section>
 
-  <!-- SECOND PANEL: BACKUP OVERVIEW + NOT YET BACKED UP EVENTS -->
+  <!-- BACKUP OVERVIEW + NOT YET BACKED UP EVENTS -->
   <section class="glass rounded-3xl p-5 md:p-6 animate-fade-in">
 
     <div class="flex items-center justify-between gap-4 mb-5">
@@ -438,7 +438,7 @@ select.glass-input option {
     </div>
 
     <!-- Backup summary -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+    <div class="grid grid-cols-3 gap-3 mb-4">
       <div class="glass-soft rounded-2xl p-4 text-center">
         <p class="text-[9px] uppercase tracking-[.18em] text-zinc-500">Total Events</p>
         <p id="backupTotal" class="text-2xl font-semibold mt-1">0</p>
@@ -477,6 +477,47 @@ select.glass-input option {
 
   </section>
 
+
+  <!-- ACCESS MANAGEMENT (ADMIN ONLY) -->
+  <section id="accessPanel" class="hidden glass rounded-3xl p-5 md:p-6 animate-fade-in">
+    <div class="flex items-center justify-between gap-4 mb-5">
+      <div>
+        <p class="text-[10px] uppercase tracking-[.22em] text-zinc-400 font-semibold">
+          Access Management
+        </p>
+        <p class="text-[11px] text-zinc-500 mt-1">
+          Whitelist Gmail accounts that are allowed to add and edit events.
+        </p>
+      </div>
+      <span class="text-[9px] uppercase tracking-[.18em] text-zinc-600">Admin Only</span>
+    </div>
+
+    <div class="glass-soft rounded-2xl p-4 md:p-5 mb-4">
+      <div class="grid grid-cols-1 sm:grid-cols-[1fr_auto_auto] gap-2">
+        <input id="whitelistEmail" type="email" placeholder="gmail@example.com"
+               class="glass-input w-full rounded-xl px-4 py-3 text-sm focus:outline-none transition">
+        <select id="whitelistRole"
+                class="glass-input rounded-xl px-4 py-3 text-sm focus:outline-none transition">
+          <option value="editor">Editor</option>
+          <option value="admin">Admin</option>
+        </select>
+        <button type="button" onclick="addWhitelistedUser()"
+                class="bg-white hover:bg-zinc-200 text-black text-sm font-semibold px-5 py-3 rounded-xl transition">
+          Add
+        </button>
+      </div>
+      <p class="text-[10px] text-zinc-600 mt-3">
+        Non-whitelisted Google accounts can still sign in and view events, but cannot modify anything.
+      </p>
+    </div>
+
+    <div id="whitelistList" class="space-y-2">
+      <div class="text-center py-6 text-zinc-600 text-[10px] uppercase tracking-[.15em]">
+        Loading accounts...
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <script>
@@ -484,7 +525,42 @@ const SUPABASE_URL = 'https://mfgifshxxikabamzoatf.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_7_V6DnFz8WDy9bMk9weVFg_7nHLZtsQ';
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+let currentRole = 'viewer';
+let currentSession = null;
 let editingId = null;
+
+function canEdit() {
+  return currentRole === 'admin' || currentRole === 'editor';
+}
+
+function accessLabel(role) {
+  if (role === 'admin') return 'Admin';
+  if (role === 'editor') return 'Editor';
+  return 'Viewer';
+}
+
+async function loadAccessRole(session) {
+  currentSession = session || null;
+  currentRole = 'viewer';
+
+  if (!session) return;
+
+  const { data, error } = await _supabase.rpc('get_my_role');
+  if (!error && data) currentRole = String(data).toLowerCase();
+
+  const badge = document.getElementById('accessBadge');
+  if (badge) {
+    badge.textContent = 'Access: ' + accessLabel(currentRole);
+    badge.classList.remove('hidden');
+  }
+
+  const editorPanel = document.getElementById('eventEditorPanel');
+  if (editorPanel) editorPanel.classList.toggle('hidden', !canEdit());
+
+  const accessPanel = document.getElementById('accessPanel');
+  if (accessPanel) accessPanel.classList.toggle('hidden', currentRole !== 'admin');
+}
+
 
 const defaultChecklist = {
   camera_ready: false,
@@ -625,11 +701,11 @@ async function loadBackupOverview() {
             </a>
           ` : ''}
 
-          <button type="button"
+          ${canEdit() ? `<button type="button"
                   onclick="editBackupEvent('${event.id}')"
                   class="glass-soft hover:bg-white/10 text-zinc-300 text-[10px] px-3 py-2 rounded-xl transition">
             Edit
-          </button>
+          </button>` : ''}
 
           <button type="button"
                   onclick="showBackupChecklist('${event.id}')"
@@ -676,6 +752,7 @@ async function showBackupChecklist(id) {
     <label class="flex items-center gap-3 p-3 rounded-xl glass-soft cursor-pointer hover:bg-white/[.06] transition">
       <input type="checkbox"
              ${checklist[key] ? 'checked' : ''}
+             ${canEdit() ? '' : 'disabled'}
              onchange="updateBackupChecklist('${event.id}', '${key}', this.checked)"
              class="w-4 h-4 accent-white">
       <span class="text-xs ${checklist[key] ? 'text-zinc-300 line-through' : 'text-zinc-400'}">
@@ -714,6 +791,11 @@ async function showBackupChecklist(id) {
 }
 
 async function updateBackupChecklist(eventId, key, checked) {
+  if (!canEdit()) {
+    alert('Your account is view-only. Only whitelisted accounts can edit events.');
+    return;
+  }
+
   const { data: event } = await _supabase
     .from('events')
     .select('checklist')
@@ -788,6 +870,11 @@ function resetBackupForm() {
 }
 
 async function editBackupEvent(id) {
+  if (!canEdit()) {
+    alert('Your account is view-only. Only whitelisted accounts can edit events.');
+    return;
+  }
+
   const { data: event, error } = await _supabase
     .from('events')
     .select('*')
@@ -842,6 +929,11 @@ async function editBackupEvent(id) {
 }
 
 async function saveBackup() {
+  if (!canEdit()) {
+    alert('Your account is view-only. Only whitelisted accounts can add or edit events.');
+    return;
+  }
+
   const title = document.getElementById('title').value.trim();
   const shootDate = document.getElementById('shootDate').value;
   const driveUrl = document.getElementById('driveUrl').value.trim();
@@ -895,11 +987,97 @@ async function saveBackup() {
   loadBackupOverview();
 }
 
+
+async function loadWhitelist() {
+  if (!isAdmin()) return;
+
+  const list = document.getElementById('whitelistList');
+  if (!list) return;
+
+  const { data, error } = await _supabase
+    .from('authorized_users')
+    .select('id, email, role, created_at')
+    .order('created_at', { ascending: true });
+
+  if (error) {
+    list.innerHTML = `<div class="text-center py-6 text-red-400 text-xs">Unable to load whitelist: ${escapeHtml(error.message)}</div>`;
+    return;
+  }
+
+  if (!data || !data.length) {
+    list.innerHTML = `<div class="text-center py-6 text-zinc-600 text-[10px] uppercase tracking-[.15em]">No whitelisted accounts</div>`;
+    return;
+  }
+
+  list.innerHTML = data.map(user => `
+    <div class="glass-soft rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div class="min-w-0">
+        <p class="text-sm text-zinc-200 break-all">${escapeHtml(user.email)}</p>
+        <p class="text-[9px] uppercase tracking-[.16em] text-zinc-600 mt-1">${escapeHtml(user.role)}</p>
+      </div>
+      <button type="button" onclick="removeWhitelistedUser('${user.id}', '${escapeHtml(user.email)}')"
+              class="text-[9px] uppercase tracking-[.16em] text-red-400 hover:text-red-300 transition px-3 py-2 rounded-xl glass-soft shrink-0">
+        Remove
+      </button>
+    </div>
+  `).join('');
+}
+
+async function addWhitelistedUser() {
+  if (!isAdmin()) return;
+
+  const emailInput = document.getElementById('whitelistEmail');
+  const roleInput = document.getElementById('whitelistRole');
+  const email = emailInput.value.trim().toLowerCase();
+  const role = roleInput.value;
+
+  if (!email || !email.includes('@')) {
+    alert('Please enter a valid Gmail address.');
+    return;
+  }
+
+  if (!email.endsWith('@gmail.com')) {
+    alert('Please enter a Gmail address ending in @gmail.com.');
+    return;
+  }
+
+  const { error } = await _supabase
+    .from('authorized_users')
+    .insert([{ email, role }]);
+
+  if (error) {
+    alert('Unable to whitelist account: ' + error.message);
+    return;
+  }
+
+  emailInput.value = '';
+  roleInput.value = 'editor';
+  await loadWhitelist();
+}
+
+async function removeWhitelistedUser(id, email) {
+  if (!isAdmin()) return;
+
+  if (!confirm(`Remove ${email} from the whitelist?`)) return;
+
+  const { error } = await _supabase
+    .from('authorized_users')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    alert('Unable to remove account: ' + error.message);
+    return;
+  }
+
+  await loadWhitelist();
+}
+
 async function signOut() {
   await _supabase.auth.signOut();
 }
 
-_supabase.auth.onAuthStateChange((event, session) => {
+_supabase.auth.onAuthStateChange(async (event, session) => {
 
   const userGreeting = document.getElementById('userGreeting');
 
@@ -913,9 +1091,10 @@ _supabase.auth.onAuthStateChange((event, session) => {
 
     if (userGreeting) {
       userGreeting.innerHTML =
-        `Welcome, <span class="text-white font-medium">${userName}</span>`;
+        `Welcome, <span class="text-white font-medium">${escapeHtml(userName)}</span>`;
     }
 
+    await loadAccessRole(session);
     loadBackupOverview();
 
   } else {
