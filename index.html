@@ -186,7 +186,7 @@
         <img src="logo.png" alt="ShotLog Logo" class="w-11 h-11 rounded-2xl border border-white/10 object-cover">
         <div>
           <h1 class="text-xl font-light tracking-wide">Shot<span class="font-bold">Log</span></h1>
-          <p class="text-[11px] text-zinc-500">School Photography Archive</p>
+          <p id="userGreeting" class="text-[11px] text-zinc-400">School Photography Archive</p>
         </div>
       </div>
 
@@ -931,6 +931,7 @@
     _supabase.auth.onAuthStateChange((event, session) => {
       const loginCard = document.getElementById('loginCard');
       const splash = document.getElementById('splashScreen');
+      const greetingEl = document.getElementById('userGreeting');
 
       if (splash) {
         splash.classList.add('opacity-0', 'pointer-events-none');
@@ -939,9 +940,23 @@
 
       if (session) {
         if (loginCard) loginCard.classList.add('hidden');
+
+        // Extract Google Account Name or Fallback to Email
+        const userName = session.user?.user_metadata?.full_name 
+                      || session.user?.user_metadata?.name 
+                      || session.user?.email 
+                      || 'User';
+
+        if (greetingEl) {
+          greetingEl.innerHTML = `Welcome, <span class="text-white font-medium">${escapeHtml(userName)}</span>`;
+        }
+
         fetchEvents();
       } else {
         if (loginCard) loginCard.classList.remove('hidden');
+        if (greetingEl) {
+          greetingEl.innerText = 'School Photography Archive';
+        }
       }
     });
 
