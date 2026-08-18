@@ -1097,6 +1097,12 @@ _supabase.auth.onAuthStateChange(async (event, session) => {
     await loadAccessRole(session);
     loadBackupOverview();
 
+    const editId = sessionStorage.getItem('shotlog_edit_event_id');
+    if (editId && canEdit()) {
+      sessionStorage.removeItem('shotlog_edit_event_id');
+      setTimeout(() => editBackupEvent(editId), 250);
+    }
+
   } else {
     window.location.href = 'index.html';
   }

@@ -824,9 +824,10 @@ escapeHtml(org.department) : 'Not set'}</p>
 
 
          <div class="flex items-center justify-between gap-3 pt-2">
-           <button onclick="deleteEvent('${event.id}')" class="text-xs text-red-400 hover:text-red-300 transition px-2 py-1">
-              Delete Event
-           </button>
+           <div class="flex items-center gap-2">
+             ${canEdit() ? `<button onclick="editEvent('${event.id}')" class="glass-soft hover:bg-white/10 text-zinc-300 text-xs px-3 py-2 rounded-xl transition">Edit Event</button>` : ''}
+             ${canEdit() ? `<button onclick="deleteEvent('${event.id}')" class="text-xs text-red-400 hover:text-red-300 transition px-2 py-1">Delete Event</button>` : ''}
+           </div>
 
 
            <div class="flex items-center gap-2">
@@ -850,6 +851,16 @@ escapeHtml(org.department) : 'Not set'}</p>
          const modal = document.getElementById('eventModal');
          modal.classList.add('hidden');
          modal.classList.remove('flex');
+     }
+
+
+     function editEvent(id) {
+         if (!canEdit()) {
+             alert('Your account is view-only. Only whitelisted accounts can edit events.');
+             return;
+         }
+         sessionStorage.setItem('shotlog_edit_event_id', id);
+         window.location.href = 'backup.html';
      }
 
 
