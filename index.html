@@ -234,127 +234,126 @@
       </div>
     </section>
 
-    <!-- Form -->
-    <form id="eventForm" class="glass glass-form-section rounded-[28px] p-5 md:p-6 space-y-5">
-      <div class="flex justify-between items-center">
-        <div>
-          <p id="formHeading" class="text-[10px] uppercase tracking-[.22em] text-zinc-400 font-semibold">Log New Event</p>
-          <p class="text-[11px] text-zinc-600 mt-1">Keep your school photography organized.</p>
-        </div>
-        <button type="button" id="cancelEditBtn" onclick="resetForm()" class="hidden text-xs text-zinc-400 hover:text-white transition underline">
-          Cancel Edit
-        </button>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 relative z-10">
-        <div>
-          <label class="form-field-label">Event Name</label>
-          <input type="text" id="title" placeholder="e.g. CCIS Intramurals" required
-            class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition">
-        </div>
-
-        <div>
-          <label class="form-field-label">Event Type</label>
-          <select id="eventType" class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition">
-            <option value="School Activity">School Activity</option>
-            <option value="Graduation">Graduation</option>
-            <option value="Sports">Sports</option>
-            <option value="Seminar">Seminar</option>
-            <option value="Program">Program</option>
-            <option value="Performance">Performance</option>
-            <option value="Organization Event">Organization Event</option>
-            <option value="Celebration">Celebration</option>
-            <option value="Portrait Session">Portrait Session</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="form-field-label">Date</label>
-          <input type="date" id="shootDate" required
-            class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition">
-        </div>
-
-        <div>
-          <label class="form-field-label">Time</label>
-          <div class="glass-input w-full rounded-xl px-4 py-3 flex items-center gap-2 min-w-0">
-            <span class="text-zinc-500 text-sm shrink-0">◷</span>
-            <select id="timeHour" aria-label="Hour" class="time-select bg-transparent text-sm flex-1">
-              <option value="">HH</option>
-              <option>01</option><option>02</option><option>03</option><option>04</option>
-              <option>05</option><option>06</option><option>07</option><option>08</option>
-              <option>09</option><option>10</option><option>11</option><option>12</option>
-            </select>
-            <span class="text-zinc-600">:</span>
-            <select id="timeMinute" aria-label="Minute" class="time-select bg-transparent text-sm flex-1">
-              <option value="">MM</option>
-              <option>00</option><option>05</option><option>10</option><option>15</option>
-              <option>20</option><option>25</option><option>30</option><option>35</option>
-              <option>40</option><option>45</option><option>50</option><option>55</option>
-            </select>
-            <select id="timePeriod" aria-label="AM or PM" class="time-select bg-transparent text-sm w-16">
-              <option value="">--</option><option>AM</option><option>PM</option>
-            </select>
-            <input type="hidden" id="shootTime">
-          </div>
-        </div>
-
-        <div>
-          <label class="form-field-label">Location</label>
-          <input type="text" id="location" placeholder="e.g. School Gym"
-            class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition">
-        </div>
-
-        <div>
-          <label class="form-field-label">Organization / Department</label>
-          <input type="text" id="organization" placeholder="e.g. CCIS"
-            class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition">
-        </div>
-
-        <div>
-          <label class="form-field-label">Backup Status</label>
-          <select id="status" class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition">
-            <option value="Shot">⚠️ Needs Backup</option>
-            <option value="Backup In Progress">⏳ Backup In Progress</option>
-            <option value="Backed Up" selected>✅ Backed Up</option>
-            <option value="Delivered">📦 Delivered</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="form-field-label">Google Drive</label>
-          <input type="url" id="driveUrl" placeholder="Paste Drive folder URL" required
-            class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition">
-        </div>
-      </div>
-
-      <div class="relative z-10">
-        <label class="form-field-label">Event Cover</label>
-        <input type="url" id="coverUrl" placeholder="Optional image URL"
-          class="glass-input w-full rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition">
-      </div>
-
-      <div class="relative z-10">
-        <label class="form-field-label">Notes</label>
-        <textarea id="notes" placeholder="Add anything you want to remember about this event..."
-          class="glass-input w-full h-24 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition resize-none"></textarea>
-      </div>
-
-      <button type="submit" id="submitBtn"
-        class="w-full bg-white hover:bg-zinc-200 text-black text-sm font-semibold py-3.5 rounded-xl transition active:scale-[.99]">
-        Save to ShotLog
-      </button>
-    </form>
-
-    <!-- Search -->
-    <div class="glass rounded-2xl p-3 flex items-center gap-3">
-      <span class="text-zinc-500 text-sm">⌕</span>
-      <input id="searchInput" type="search" placeholder="Search events, locations, departments..."
-        class="bg-transparent flex-1 outline-none text-sm text-white placeholder-zinc-600">
-      <button id="clearSearch" type="button" class="hidden text-[10px] uppercase tracking-wider text-zinc-500 hover:text-white">
-        Clear
-      </button>
+   <!-- Form -->
+<form id="eventForm" class="glass glass-form-section rounded-3xl p-4 sm:p-6 space-y-5">
+  <div class="flex justify-between items-center pb-2 border-b border-white/5">
+    <div>
+      <p id="formHeading" class="text-[10px] uppercase tracking-[.22em] text-zinc-400 font-semibold">Log New Event</p>
+      <p class="text-[11px] text-zinc-500 mt-0.5">Keep your school photography organized.</p>
     </div>
+    <button type="button" id="cancelEditBtn" onclick="resetForm()" class="hidden text-xs text-zinc-400 hover:text-white transition underline">
+      Cancel Edit
+    </button>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 relative z-10">
+    <!-- Event Name (Full width on all screens for readability) -->
+    <div class="sm:col-span-2">
+      <label class="form-field-label">Event Name</label>
+      <input type="text" id="title" placeholder="e.g. CCIS Intramurals 2026" required
+        class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+    </div>
+
+    <!-- Event Type & Department -->
+    <div>
+      <label class="form-field-label">Event Type</label>
+      <select id="eventType" class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+        <option value="School Activity">School Activity</option>
+        <option value="Graduation">Graduation</option>
+        <option value="Sports">Sports</option>
+        <option value="Seminar">Seminar</option>
+        <option value="Program">Program</option>
+        <option value="Performance">Performance</option>
+        <option value="Organization Event">Organization Event</option>
+        <option value="Celebration">Celebration</option>
+        <option value="Portrait Session">Portrait Session</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="form-field-label">Organization / Department</label>
+      <input type="text" id="organization" placeholder="e.g. CCIS"
+        class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+    </div>
+
+    <!-- Date & Time -->
+    <div>
+      <label class="form-field-label">Date</label>
+      <input type="date" id="shootDate" required
+        class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+    </div>
+
+    <div>
+      <label class="form-field-label">Time</label>
+      <div class="glass-input w-full rounded-xl px-3 py-3 flex items-center justify-between gap-1 min-w-0">
+        <span class="text-zinc-500 text-xs shrink-0 pl-1">◷</span>
+        <div class="flex items-center gap-1 flex-1 min-w-0">
+          <select id="timeHour" aria-label="Hour" class="time-select bg-transparent text-sm w-full text-center">
+            <option value="">HH</option>
+            <option>01</option><option>02</option><option>03</option><option>04</option>
+            <option>05</option><option>06</option><option>07</option><option>08</option>
+            <option>09</option><option>10</option><option>11</option><option>12</option>
+          </select>
+          <span class="text-zinc-600 text-xs shrink-0">:</span>
+          <select id="timeMinute" aria-label="Minute" class="time-select bg-transparent text-sm w-full text-center">
+            <option value="">MM</option>
+            <option>00</option><option>05</option><option>10</option><option>15</option>
+            <option>20</option><option>25</option><option>30</option><option>35</option>
+            <option>40</option><option>45</option><option>50</option><option>55</option>
+          </select>
+          <select id="timePeriod" aria-label="AM or PM" class="time-select bg-transparent text-sm shrink-0 font-medium text-zinc-300">
+            <option value="">--</option><option>AM</option><option>PM</option>
+          </select>
+        </div>
+        <input type="hidden" id="shootTime">
+      </div>
+    </div>
+
+    <!-- Location & Status -->
+    <div>
+      <label class="form-field-label">Location</label>
+      <input type="text" id="location" placeholder="e.g. School Gym"
+        class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+    </div>
+
+    <div>
+      <label class="form-field-label">Backup Status</label>
+      <select id="status" class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+        <option value="Shot">⚠️ Needs Backup</option>
+        <option value="Backup In Progress">⏳ Backup In Progress</option>
+        <option value="Backed Up" selected>✅ Backed Up</option>
+        <option value="Delivered">📦 Delivered</option>
+      </select>
+    </div>
+
+    <!-- Google Drive URL (Full width for long links) -->
+    <div class="sm:col-span-2">
+      <label class="form-field-label">Google Drive Folder URL</label>
+      <input type="url" id="driveUrl" placeholder="https://drive.google.com/drive/folders/..." required
+        class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+    </div>
+
+    <!-- Cover Image (Optional) -->
+    <div class="sm:col-span-2">
+      <label class="form-field-label">Cover Image URL (Optional)</label>
+      <input type="url" id="coverUrl" placeholder="https://..."
+        class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+    </div>
+
+    <!-- Notes -->
+    <div class="sm:col-span-2">
+      <label class="form-field-label">Notes</label>
+      <textarea id="notes" placeholder="Shot list, equipment required, key contacts..."
+        class="glass-input w-full h-24 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition resize-none"></textarea>
+    </div>
+  </div>
+
+  <button type="submit" id="submitBtn"
+    class="w-full bg-white hover:bg-zinc-200 text-black text-sm font-semibold py-3.5 rounded-xl transition active:scale-[.99]">
+    Save to ShotLog
+  </button>
+</form>
 
     <!-- Filters -->
     <div class="glass-soft rounded-2xl px-3 pt-3">
@@ -726,7 +725,7 @@
       const recent = [...allEvents]
         .sort((a, b) => `${b.shoot_date}T${b.shoot_time || '00:00'}`.localeCompare(`${a.shoot_date}T${a.shoot_time || '00:00'}`))
         .slice(0, 4);
-
+z
       if (!recent.length) {
         panel.classList.add('hidden');
         return;
