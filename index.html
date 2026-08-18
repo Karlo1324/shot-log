@@ -245,12 +245,12 @@
         <div class="sm:col-span-2">
           <label class="form-field-label">Event Name</label>
           <input type="text" id="title" placeholder="e.g. CCIS Intramurals 2026" required
-            class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+            class="glass-input w-full rounded-xl px-4 py-3 sm:py-3.5 text-sm text-white focus:outline-none transition">
         </div>
 
         <div>
           <label class="form-field-label">Event Type</label>
-          <select id="eventType" class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+          <select id="eventType" class="glass-input w-full rounded-xl px-4 py-3 sm:py-3.5 text-sm text-white focus:outline-none transition">
             <option value="School Activity">School Activity</option>
             <option value="Graduation">Graduation</option>
             <option value="Sports">Sports</option>
@@ -264,16 +264,34 @@
           </select>
         </div>
 
-        <div>
-          <label class="form-field-label">Organization / Department</label>
-          <input type="text" id="organization" placeholder="e.g. CCIS"
-            class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+        <!-- NEW: Updated Organization Section -->
+        <div class="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
+            <label class="form-field-label">Department</label>
+            <select id="orgDepartment" class="glass-input w-full rounded-xl px-4 py-3 sm:py-3.5 text-sm text-white focus:outline-none transition">
+              <option value="">Select Department...</option>
+              <option value="CCIS">CCIS</option>
+              <option value="CBA">CBA</option>
+              <option value="CAS">CAS</option>
+              <option value="CED">CED</option>
+              <option value="Other">Others...</option>
+            </select>
+            <input type="text" id="orgDepartmentOther" placeholder="Specify Department"
+              class="glass-input w-full rounded-xl px-4 py-3 sm:py-3.5 text-sm text-white focus:outline-none transition mt-2 hidden">
+          </div>
+
+          <div>
+            <label class="form-field-label">Sub-unit / Committee <span class="text-zinc-600 lowercase tracking-normal">(Optional)</span></label>
+            <input type="text" id="orgSubUnit" placeholder="e.g. ACSS"
+              class="glass-input w-full rounded-xl px-4 py-3 sm:py-3.5 text-sm text-white focus:outline-none transition">
+          </div>
         </div>
+        <!-- END: Updated Organization Section -->
 
         <div>
           <label class="form-field-label">Date</label>
           <input type="date" id="shootDate" required
-            class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+            class="glass-input w-full rounded-xl px-4 py-3 sm:py-3.5 text-sm text-white focus:outline-none transition">
         </div>
 
         <div>
@@ -305,12 +323,12 @@
         <div>
           <label class="form-field-label">Location</label>
           <input type="text" id="location" placeholder="e.g. School Gym"
-            class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+            class="glass-input w-full rounded-xl px-4 py-3 sm:py-3.5 text-sm text-white focus:outline-none transition">
         </div>
 
         <div>
           <label class="form-field-label">Backup Status</label>
-          <select id="status" class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+          <select id="status" class="glass-input w-full rounded-xl px-4 py-3 sm:py-3.5 text-sm text-white focus:outline-none transition">
             <option value="Shot">⚠️ Needs Backup</option>
             <option value="Backup In Progress">⏳ Backup In Progress</option>
             <option value="Backed Up" selected>✅ Backed Up</option>
@@ -321,13 +339,13 @@
         <div class="sm:col-span-2">
           <label class="form-field-label">Google Drive Folder URL</label>
           <input type="url" id="driveUrl" placeholder="https://drive.google.com/drive/folders/..." required
-            class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+            class="glass-input w-full rounded-xl px-4 py-3 sm:py-3.5 text-sm text-white focus:outline-none transition">
         </div>
 
         <div class="sm:col-span-2">
           <label class="form-field-label">Cover Image URL (Optional)</label>
           <input type="url" id="coverUrl" placeholder="https://..."
-            class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+            class="glass-input w-full rounded-xl px-4 py-3 sm:py-3.5 text-sm text-white focus:outline-none transition">
         </div>
 
         <div class="sm:col-span-2">
@@ -406,6 +424,32 @@
       uploaded_to_drive: 'Uploaded to Google Drive',
       drive_link_added: 'Google Drive link added'
     };
+
+    // --- Helper for handling existing text orgs vs new JSON orgs ---
+    function parseOrganization(org) {
+      if (!org) return { department: null, subUnit: null };
+      if (typeof org === 'object') return org;
+      try {
+        return JSON.parse(org);
+      } catch (e) {
+        // Fallback for legacy plain text data (e.g. "CCIS / ACSS" or "CCIS")
+        const parts = String(org).split('/').map(s => s.trim());
+        return { department: parts[0] || null, subUnit: parts[1] || null };
+      }
+    }
+    // ---------------------------------------------------------------
+
+    // "Other" Department Dropdown Listener
+    document.getElementById('orgDepartment').addEventListener('change', function() {
+      const otherInput = document.getElementById('orgDepartmentOther');
+      if (this.value === 'Other') {
+        otherInput.classList.remove('hidden');
+        otherInput.focus();
+      } else {
+        otherInput.classList.add('hidden');
+        otherInput.value = '';
+      }
+    });
 
     function escapeHtml(value = '') {
       return String(value)
@@ -555,11 +599,14 @@
     function matchesSearch(event) {
       if (!searchTerm) return true;
 
+      const org = parseOrganization(event.organization);
+
       const haystack = [
         event.title,
         event.event_type,
         event.location,
-        event.organization,
+        org.department,
+        org.subUnit,
         event.notes
       ].filter(Boolean).join(' ').toLowerCase();
 
@@ -609,6 +656,7 @@
       filtered.forEach((event, index) => {
         const card = document.createElement('div');
         const progress = checklistProgress(event);
+        const org = parseOrganization(event.organization);
 
         card.className = 'animate-fade-in glass rounded-3xl p-4 md:p-5 transition-all duration-300 hover:border-white/20 hover:bg-white/[.06] cursor-pointer';
         card.style.animationDelay = `${index * 35}ms`;
@@ -623,6 +671,15 @@
           time ? `🕐 ${time}` : '',
           event.location ? `📍 ${escapeHtml(event.location)}` : ''
         ].filter(Boolean).join(' <span class="text-zinc-700 mx-1">•</span> ');
+
+        // Setup the new Organization Badge Chips
+        let orgChips = '';
+        if (org.department) {
+          orgChips += `<span class="text-[10px] px-2 py-1 rounded-lg glass-soft text-zinc-300 font-medium">${escapeHtml(org.department)}</span>`;
+        }
+        if (org.subUnit) {
+          orgChips += `<span class="text-[10px] px-2 py-1 rounded-lg glass-soft text-zinc-400">${escapeHtml(org.subUnit)}</span>`;
+        }
 
         card.innerHTML = `
           <div class="flex flex-col md:flex-row md:items-center gap-4">
@@ -643,7 +700,7 @@
                 <span class="text-[10px] px-2 py-1 rounded-lg glass-soft text-zinc-500">
                   Checklist ${progress.done}/${progress.total}
                 </span>
-                ${event.organization ? `<span class="text-[10px] px-2 py-1 rounded-lg glass-soft text-zinc-500">${escapeHtml(event.organization)}</span>` : ''}
+                ${orgChips}
               </div>
             </div>
 
@@ -725,6 +782,7 @@
 
       const c = normalizeChecklist(event.checklist);
       const progress = checklistProgress(event);
+      const org = parseOrganization(event.organization);
 
       const checklistHtml = Object.entries(checklistLabels).map(([key, label]) => `
         <label class="flex items-center gap-3 p-3 rounded-xl glass-soft cursor-pointer hover:bg-white/[.06] transition">
@@ -738,6 +796,11 @@
       const cover = event.cover_url
         ? `<img src="${escapeHtml(event.cover_url)}" alt="" class="w-full h-44 object-cover rounded-2xl border border-white/10 mb-5">`
         : '';
+
+      let orgDisplay = org.department ? escapeHtml(org.department) : 'Not set';
+      if (org.subUnit) {
+         orgDisplay += `<span class="text-zinc-500 ml-1">• ${escapeHtml(org.subUnit)}</span>`;
+      }
 
       document.getElementById('modalContent').innerHTML = `
         <div class="p-5 md:p-6">
@@ -767,7 +830,7 @@
             </div>
             <div class="glass-soft rounded-2xl p-3">
               <p class="text-[9px] uppercase tracking-wider text-zinc-600">Department</p>
-              <p class="text-xs text-zinc-300 mt-1">${escapeHtml(event.organization || 'Not set')}</p>
+              <p class="text-xs text-zinc-300 mt-1">${orgDisplay}</p>
             </div>
           </div>
 
@@ -857,7 +920,24 @@
 
       document.getElementById('title').value = event.title || '';
       document.getElementById('eventType').value = event.event_type || 'School Activity';
-      document.getElementById('organization').value = event.organization || '';
+      
+      // Populate new Organization fields
+      const org = parseOrganization(event.organization);
+      const deptSelect = document.getElementById('orgDepartment');
+      const deptOther = document.getElementById('orgDepartmentOther');
+      
+      const standardDepts = ['CCIS', 'CBA', 'CAS', 'CED', ''];
+      if (org.department && !standardDepts.includes(org.department)) {
+        deptSelect.value = 'Other';
+        deptOther.value = org.department;
+        deptOther.classList.remove('hidden');
+      } else {
+        deptSelect.value = org.department || '';
+        deptOther.value = '';
+        deptOther.classList.add('hidden');
+      }
+      document.getElementById('orgSubUnit').value = org.subUnit || '';
+
       document.getElementById('shootDate').value = event.shoot_date || '';
       setTimePicker(event.shoot_time);
       document.getElementById('location').value = event.location || '';
@@ -873,6 +953,11 @@
       editingId = null;
       form.reset();
       setTimePicker('');
+      
+      // Reset Org specific fields
+      document.getElementById('orgDepartmentOther').classList.add('hidden');
+      document.getElementById('orgDepartmentOther').value = '';
+
       document.getElementById('formHeading').innerText = 'Log New Event';
       document.getElementById('cancelEditBtn').classList.add('hidden');
       document.getElementById('submitBtn').innerText = 'Save to ShotLog';
@@ -881,10 +966,17 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
+      // Extract new organization object
+      let dept = document.getElementById('orgDepartment').value;
+      if (dept === 'Other') {
+        dept = document.getElementById('orgDepartmentOther').value;
+      }
+      const subUnit = document.getElementById('orgSubUnit').value;
+
       const payload = {
         title: document.getElementById('title').value,
         event_type: document.getElementById('eventType').value,
-        organization: document.getElementById('organization').value,
+        organization: { department: dept || null, subUnit: subUnit || null },
         shoot_date: document.getElementById('shootDate').value,
         shoot_time: document.getElementById('shootTime').value || null,
         location: document.getElementById('location').value,
