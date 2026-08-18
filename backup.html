@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShotLog — Backup Overview</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#050505">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+* { box-sizing: border-box; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn .45s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+.glass {
+  background: rgba(255,255,255,.045);
+  border: 1px solid rgba(255,255,255,.11);
+  box-shadow:
+    0 20px 70px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.055);
+  backdrop-filter: blur(22px) saturate(120%);
+  -webkit-backdrop-filter: blur(22px) saturate(120%);
+}
+
+.glass-soft {
+  background: rgba(255,255,255,.025);
+  border: 1px solid rgba(255,255,255,.08);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.glass-input {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.055), rgba(255,255,255,.018)),
+    rgba(8,8,8,.34);
+  border: 1px solid rgba(255,255,255,.105);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.045),
+    0 8px 30px rgba(0,0,0,.16);
+  backdrop-filter: blur(18px) saturate(125%);
+  -webkit-backdrop-filter: blur(18px) saturate(125%);
+  color-scheme: dark;
+  font-family: inherit;
+  color: white;
+}
+
+.glass-input:hover {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.07), rgba(255,255,255,.02)),
+    rgba(8,8,8,.38);
+  border-color: rgba(255,255,255,.15);
+}
+
+.glass-input:focus {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.025)),
+    rgba(8,8,8,.42);
+  border-color: rgba(255,255,255,.42);
+  box-shadow: 0 0 0 3px rgba(255,255,255,.055);
+}
+
+.glass-input::placeholder {
+  color: rgba(161,161,170,.58);
+}
+
+.glass-input[type="date"] {
+  color-scheme: dark;
+}
+
+.glass-input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: .58;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.time-select {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  min-width: 0;
+  color: rgba(228,228,231,.92);
+}
+
+.time-select option,
+select.glass-input option {
+  background: #111;
+  color: #f4f4f5;
+}
+
+.glass-form-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-form-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    rgba(255,255,255,.035),
+    transparent 35%,
+    rgba(255,255,255,.018) 70%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+.form-field-label {
+  display: block;
+  margin: 0 0 .4rem .25rem;
+  color: rgba(161,161,170,.65);
+  font-size: 9px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.modal-backdrop {
+  background: rgba(0,0,0,.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+::selection { background: rgba(255,255,255,.22); }
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.13);
+  border-radius: 999px;
+}
+</style>
+</head>
+
+<body class="bg-[#030303] text-zinc-100 min-h-screen p-4 md:p-8 font-sans relative overflow-x-hidden antialiased">
+
+<!-- Ambient background - SAME STYLE AS INDEX -->
+<div class="fixed -top-40 -left-40 w-[32rem] h-[32rem] rounded-full bg-white/[.035] blur-[130px] pointer-events-none"></div>
+<div class="fixed top-1/3 -right-48 w-[34rem] h-[34rem] rounded-full bg-white/[.025] blur-[140px] pointer-events-none"></div>
+<div class="fixed bottom-[-18rem] left-1/3 w-[30rem] h-[30rem] rounded-full bg-white/[.02] blur-[130px] pointer-events-none"></div>
+
+<main class="relative z-10 max-w-4xl mx-auto space-y-6">
+
+  <!-- Header -->
+  <header class="glass rounded-3xl px-5 py-4 flex justify-between items-center">
+    <div class="flex items-center gap-3">
+      <img src="logo.png" alt="ShotLog Logo"
+           class="w-11 h-11 rounded-2xl border border-white/10 object-cover">
+
+      <div>
+        <h1 class="text-xl font-light tracking-wide">
+          Shot<span class="font-bold">Log</span>
+        </h1>
+        <p id="userGreeting" class="text-[11px] text-zinc-400">
+          Backup Overview
+        </p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <a href="index.html"
+         class="text-[9px] tracking-[.18em] uppercase px-3 py-1.5 rounded-full glass-soft text-zinc-400 hover:text-white transition">
+        Back
+      </a>
+
+      <button onclick="signOut()"
+         class="text-[9px] tracking-[.18em] uppercase px-3 py-1.5 rounded-full glass-soft text-zinc-400 hover:text-white transition">
+        Sign Out
+      </button>
+    </div>
+  </header>
+
+  <!-- Backup Overview -->
+  <section class="glass rounded-3xl p-5 md:p-6 animate-fade-in">
+
+    <div class="flex items-center justify-between gap-4 mb-5">
+      <div>
+        <p class="text-[10px] uppercase tracking-[.22em] text-zinc-400 font-semibold">
+          Backup Overview
+        </p>
+        <p class="text-[11px] text-zinc-500 mt-1">
+          Add and organize the information for your school photography backup.
+        </p>
+      </div>
+
+      <div class="hidden sm:block text-right">
+        <p class="text-[9px] uppercase tracking-[.18em] text-zinc-600">
+          ShotLog
+        </p>
+        <p class="text-xs text-zinc-400 mt-1">
+          Event Archive
+        </p>
+      </div>
+    </div>
+
+    <!-- EVENT INFORMATION -->
+    <div class="glass-soft rounded-2xl p-4 md:p-5 mb-4">
+      <div class="mb-4">
+        <p class="text-[9px] uppercase tracking-[.2em] text-zinc-400 font-semibold">
+          Event Information
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+
+        <div class="sm:col-span-2">
+          <label class="form-field-label">Event Name</label>
+          <input type="text"
+                 id="title"
+                 placeholder="e.g. CCIS Intramurals 2026"
+                 required
+                 class="glass-input w-full rounded-xl px-4 py-3 sm:py-3.5 text-sm focus:outline-none transition">
+        </div>
+
+        <div>
+          <label class="form-field-label">Event Type</label>
+          <select id="eventType"
+                  class="glass-input w-full rounded-xl px-4 py-3 sm:py-3.5 text-sm focus:outline-none transition">
+            <option value="School Activity">School Activity</option>
+            <option value="Graduation">Graduation</option>
+            <option value="Sports">Sports</option>
+            <option value="Seminar">Seminar</option>
+            <option value="Program">Program</option>
+            <option value="Performance">Performance</option>
+            <option value="Organization Event">Organization Event</option>
+            <option value="Celebration">Celebration</option>
+            <option value="Portrait Session">Portrait Session</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="form-field-label">Backup Status</label>
+          <select id="status"
+                  class="glass-input w-full rounded-xl px-4 py-3 sm:py-3.5 text-sm focus:outline-none transition">
+            <option value="Shot">⚠️ Needs Backup</option>
+            <option value="Backup In Progress">⏳ Backup In Progress</option>
+            <option value="Backed Up">✅ Backed Up</option>
+            <option value="Delivered">📦 Delivered</option>
+          </select>
+        </div>
+
+        <!-- ORGANIZATION -->
+        <div class="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+
+          <div>
+            <label class="form-field-label">Department</label>
+            <select id="orgDepartment"
+                    class="glass-input w-full min-w-0 rounded-xl px-4 py-2.5 sm:py-3.5 text-sm focus:outline-none transition">
+              <option value="">Select Department...</option>
+              <option value="CCIS">CCIS</option>
+              <option value="CBA">CABE</option>
+              <option value="CAS">CHS</option>
+              <option value="CED">CEDAS</option>
+              <option value="Other">Others...</option>
+            </select>
+
+            <input type="text"
+                   id="orgDepartmentOther"
+                   placeholder="Specify Department"
+                   class="glass-input w-full min-w-0 rounded-xl px-4 py-2.5 sm:py-3.5 text-sm focus:outline-none transition mt-2 hidden">
+          </div>
+
+          <div>
+            <label class="form-field-label">
+              Sub-unit / Committee
+              <span class="text-zinc-600 lowercase tracking-normal">(Optional)</span>
+            </label>
+
+            <input type="text"
+                   id="orgSubUnit"
+                   placeholder="e.g. ACSS"
+                   class="glass-input w-full min-w-0 rounded-xl px-4 py-2.5 sm:py-3.5 text-sm focus:outline-none transition">
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- SCHEDULE -->
+    <div class="glass-soft rounded-2xl p-4 md:p-5 mb-4">
+      <div class="mb-4">
+        <p class="text-[9px] uppercase tracking-[.2em] text-zinc-400 font-semibold">
+          Schedule & Location
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+
+        <div>
+          <label class="form-field-label">Date</label>
+          <input type="date"
+                 id="shootDate"
+                 required
+                 class="glass-input w-full rounded-xl px-4 py-3 sm:py-3.5 text-sm focus:outline-none transition">
+        </div>
+
+        <div>
+          <label class="form-field-label">Time</label>
+
+          <div class="glass-input w-full rounded-xl px-3 py-3 flex items-center justify-between gap-1 min-w-0">
+
+            <span class="text-zinc-500 text-xs shrink-0 pl-1">◷</span>
+
+            <div class="flex items-center gap-1 flex-1 min-w-0">
+
+              <select id="timeHour"
+                      class="time-select bg-transparent text-sm w-full text-center">
+                <option value="">HH</option>
+                <option>01</option><option>02</option><option>03</option>
+                <option>04</option><option>05</option><option>06</option>
+                <option>07</option><option>08</option><option>09</option>
+                <option>10</option><option>11</option><option>12</option>
+              </select>
+
+              <span class="text-zinc-600 text-xs shrink-0">:</span>
+
+              <select id="timeMinute"
+                      class="time-select bg-transparent text-sm w-full text-center">
+                <option value="">MM</option>
+                <option>00</option><option>05</option><option>10</option>
+                <option>15</option><option>20</option><option>25</option>
+                <option>30</option><option>35</option><option>40</option>
+                <option>45</option><option>50</option><option>55</option>
+              </select>
+
+              <select id="timePeriod"
+                      class="time-select bg-transparent text-sm shrink-0 font-medium text-zinc-300">
+                <option value="">--</option>
+                <option>AM</option>
+                <option>PM</option>
+              </select>
+
+            </div>
+
+            <input type="hidden" id="shootTime">
+          </div>
+        </div>
+
+        <div class="sm:col-span-2">
+          <label class="form-field-label">Location</label>
+          <input type="text"
+                 id="location"
+                 placeholder="e.g. School Gym"
+                 class="glass-input w-full rounded-xl px-4 py-3 sm:py-3.5 text-sm focus:outline-none transition">
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BACKUP INFORMATION -->
+    <div class="glass-soft rounded-2xl p-4 md:p-5 mb-4">
+      <div class="mb-4">
+        <p class="text-[9px] uppercase tracking-[.2em] text-zinc-400 font-semibold">
+          Backup Information
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-3.5">
+
+        <div>
+          <label class="form-field-label">Google Drive Folder URL</label>
+          <input type="url"
+                 id="driveUrl"
+                 placeholder="https://drive.google.com/drive/folders/..."
+                 required
+                 class="glass-input w-full rounded-xl px-4 py-3 sm:py-3.5 text-sm focus:outline-none transition">
+        </div>
+
+        <div>
+          <label class="form-field-label">Cover Image URL (Optional)</label>
+          <input type="url"
+                 id="coverUrl"
+                 placeholder="https://..."
+                 class="glass-input w-full rounded-xl px-4 py-3 sm:py-3.5 text-sm focus:outline-none transition">
+        </div>
+
+        <div>
+          <label class="form-field-label">Notes</label>
+          <textarea id="notes"
+                    placeholder="Shot list, equipment required, key contacts..."
+                    class="glass-input w-full h-24 rounded-xl px-4 py-3 text-sm focus:outline-none transition resize-none"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ACTION -->
+    <button type="button"
+            id="saveBtn"
+            onclick="saveBackup()"
+            class="w-full bg-white hover:bg-zinc-200 text-black text-sm font-semibold py-3.5 rounded-xl transition active:scale-[.99]">
+      Save to ShotLog
+    </button>
+
+  </section>
+
+</main>
+
+<script>
+const SUPABASE_URL = 'https://mfgifshxxikabamzoatf.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_7_V6DnFz8WDy9bMk9weVFg_7nHLZtsQ';
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const defaultChecklist = {
+  camera_ready: false,
+  batteries_ready: false,
+  memory_card_ready: false,
+  photos_transferred: false,
+  photos_organized: false,
+  photos_edited: false,
+  uploaded_to_drive: false,
+  drive_link_added: false
+};
+
+document.getElementById('orgDepartment').addEventListener('change', function () {
+  const otherInput = document.getElementById('orgDepartmentOther');
+
+  if (this.value === 'Other') {
+    otherInput.classList.remove('hidden');
+    otherInput.focus();
+  } else {
+    otherInput.classList.add('hidden');
+    otherInput.value = '';
+  }
+});
+
+function syncTimePicker() {
+  const hour = document.getElementById('timeHour').value;
+  const minute = document.getElementById('timeMinute').value;
+  const period = document.getElementById('timePeriod').value;
+  const hidden = document.getElementById('shootTime');
+
+  if (!hour || !minute || !period) {
+    hidden.value = '';
+    return;
+  }
+
+  let h = Number(hour);
+
+  if (period === 'AM' && h === 12) h = 0;
+  if (period === 'PM' && h !== 12) h += 12;
+
+  hidden.value = `${String(h).padStart(2, '0')}:${minute}`;
+}
+
+['timeHour', 'timeMinute', 'timePeriod'].forEach(id => {
+  document.getElementById(id).addEventListener('change', syncTimePicker);
+});
+
+async function saveBackup() {
+
+  const title = document.getElementById('title').value.trim();
+  const shootDate = document.getElementById('shootDate').value;
+  const driveUrl = document.getElementById('driveUrl').value.trim();
+
+  if (!title || !shootDate || !driveUrl) {
+    alert('Please complete Event Name, Date, and Google Drive Folder URL.');
+    return;
+  }
+
+  let dept = document.getElementById('orgDepartment').value;
+
+  if (dept === 'Other') {
+    dept = document.getElementById('orgDepartmentOther').value.trim();
+  }
+
+  const subUnit = document.getElementById('orgSubUnit').value.trim();
+
+  const organization = {
+    department: dept || null,
+    subUnit: subUnit || null
+  };
+
+  const payload = {
+    title: title,
+    event_type: document.getElementById('eventType').value,
+    organization: organization,
+    shoot_date: shootDate,
+    shoot_time: document.getElementById('shootTime').value || null,
+    location: document.getElementById('location').value.trim(),
+    status: document.getElementById('status').value,
+    drive_url: driveUrl,
+    cover_url: document.getElementById('coverUrl').value.trim() || null,
+    notes: document.getElementById('notes').value.trim(),
+    checklist: defaultChecklist
+  };
+
+  const { error } = await _supabase
+    .from('events')
+    .insert([payload]);
+
+  if (error) {
+    alert('Error adding backup: ' + error.message);
+    return;
+  }
+
+  alert('Backup overview saved successfully.');
+
+  document.getElementById('title').value = '';
+  document.getElementById('eventType').value = 'School Activity';
+  document.getElementById('orgDepartment').value = '';
+  document.getElementById('orgDepartmentOther').value = '';
+  document.getElementById('orgDepartmentOther').classList.add('hidden');
+  document.getElementById('orgSubUnit').value = '';
+  document.getElementById('shootDate').value = '';
+  document.getElementById('timeHour').value = '';
+  document.getElementById('timeMinute').value = '';
+  document.getElementById('timePeriod').value = '';
+  document.getElementById('shootTime').value = '';
+  document.getElementById('location').value = '';
+  document.getElementById('status').value = 'Backed Up';
+  document.getElementById('driveUrl').value = '';
+  document.getElementById('coverUrl').value = '';
+  document.getElementById('notes').value = '';
+}
+
+async function signOut() {
+  await _supabase.auth.signOut();
+}
+
+_supabase.auth.onAuthStateChange((event, session) => {
+
+  const userGreeting = document.getElementById('userGreeting');
+
+  if (session) {
+
+    const userName =
+      session.user?.user_metadata?.full_name ||
+      session.user?.user_metadata?.name ||
+      session.user?.email ||
+      'User';
+
+    if (userGreeting) {
+      userGreeting.innerHTML =
+        `Welcome, <span class="text-white font-medium">${userName}</span>`;
+    }
+
+  } else {
+    window.location.href = 'index.html';
+  }
+});
+</script>
+
+</body>
+</html>
