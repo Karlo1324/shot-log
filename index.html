@@ -17,11 +17,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
-
     .animate-fade-in {
       animation: fadeIn .45s cubic-bezier(.16,1,.3,1) forwards;
     }
@@ -178,7 +173,7 @@
     </div>
   </div>
 
-  <!-- Ambient glass background -->
+  <!-- Ambient background -->
   <div class="fixed -top-40 -left-40 w-[32rem] h-[32rem] rounded-full bg-white/[.035] blur-[130px] pointer-events-none"></div>
   <div class="fixed top-1/3 -right-48 w-[34rem] h-[34rem] rounded-full bg-white/[.025] blur-[140px] pointer-events-none"></div>
   <div class="fixed bottom-[-18rem] left-1/3 w-[30rem] h-[30rem] rounded-full bg-white/[.02] blur-[130px] pointer-events-none"></div>
@@ -234,126 +229,119 @@
       </div>
     </section>
 
-   <!-- Form -->
-<form id="eventForm" class="glass glass-form-section rounded-3xl p-4 sm:p-6 space-y-5">
-  <div class="flex justify-between items-center pb-2 border-b border-white/5">
-    <div>
-      <p id="formHeading" class="text-[10px] uppercase tracking-[.22em] text-zinc-400 font-semibold">Log New Event</p>
-      <p class="text-[11px] text-zinc-500 mt-0.5">Keep your school photography organized.</p>
-    </div>
-    <button type="button" id="cancelEditBtn" onclick="resetForm()" class="hidden text-xs text-zinc-400 hover:text-white transition underline">
-      Cancel Edit
-    </button>
-  </div>
+    <!-- Form -->
+    <form id="eventForm" class="glass glass-form-section rounded-3xl p-4 sm:p-6 space-y-5">
+      <div class="flex justify-between items-center pb-2 border-b border-white/5">
+        <div>
+          <p id="formHeading" class="text-[10px] uppercase tracking-[.22em] text-zinc-400 font-semibold">Log New Event</p>
+          <p class="text-[11px] text-zinc-500 mt-0.5">Keep your school photography organized.</p>
+        </div>
+        <button type="button" id="cancelEditBtn" onclick="resetForm()" class="hidden text-xs text-zinc-400 hover:text-white transition underline">
+          Cancel Edit
+        </button>
+      </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 relative z-10">
-    <!-- Event Name (Full width on all screens for readability) -->
-    <div class="sm:col-span-2">
-      <label class="form-field-label">Event Name</label>
-      <input type="text" id="title" placeholder="e.g. CCIS Intramurals 2026" required
-        class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
-    </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 relative z-10">
+        <div class="sm:col-span-2">
+          <label class="form-field-label">Event Name</label>
+          <input type="text" id="title" placeholder="e.g. CCIS Intramurals 2026" required
+            class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+        </div>
 
-    <!-- Event Type & Department -->
-    <div>
-      <label class="form-field-label">Event Type</label>
-      <select id="eventType" class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
-        <option value="School Activity">School Activity</option>
-        <option value="Graduation">Graduation</option>
-        <option value="Sports">Sports</option>
-        <option value="Seminar">Seminar</option>
-        <option value="Program">Program</option>
-        <option value="Performance">Performance</option>
-        <option value="Organization Event">Organization Event</option>
-        <option value="Celebration">Celebration</option>
-        <option value="Portrait Session">Portrait Session</option>
-        <option value="Other">Other</option>
-      </select>
-    </div>
-
-    <div>
-      <label class="form-field-label">Organization / Department</label>
-      <input type="text" id="organization" placeholder="e.g. CCIS"
-        class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
-    </div>
-
-    <!-- Date & Time -->
-    <div>
-      <label class="form-field-label">Date</label>
-      <input type="date" id="shootDate" required
-        class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
-    </div>
-
-    <div>
-      <label class="form-field-label">Time</label>
-      <div class="glass-input w-full rounded-xl px-3 py-3 flex items-center justify-between gap-1 min-w-0">
-        <span class="text-zinc-500 text-xs shrink-0 pl-1">◷</span>
-        <div class="flex items-center gap-1 flex-1 min-w-0">
-          <select id="timeHour" aria-label="Hour" class="time-select bg-transparent text-sm w-full text-center">
-            <option value="">HH</option>
-            <option>01</option><option>02</option><option>03</option><option>04</option>
-            <option>05</option><option>06</option><option>07</option><option>08</option>
-            <option>09</option><option>10</option><option>11</option><option>12</option>
-          </select>
-          <span class="text-zinc-600 text-xs shrink-0">:</span>
-          <select id="timeMinute" aria-label="Minute" class="time-select bg-transparent text-sm w-full text-center">
-            <option value="">MM</option>
-            <option>00</option><option>05</option><option>10</option><option>15</option>
-            <option>20</option><option>25</option><option>30</option><option>35</option>
-            <option>40</option><option>45</option><option>50</option><option>55</option>
-          </select>
-          <select id="timePeriod" aria-label="AM or PM" class="time-select bg-transparent text-sm shrink-0 font-medium text-zinc-300">
-            <option value="">--</option><option>AM</option><option>PM</option>
+        <div>
+          <label class="form-field-label">Event Type</label>
+          <select id="eventType" class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+            <option value="School Activity">School Activity</option>
+            <option value="Graduation">Graduation</option>
+            <option value="Sports">Sports</option>
+            <option value="Seminar">Seminar</option>
+            <option value="Program">Program</option>
+            <option value="Performance">Performance</option>
+            <option value="Organization Event">Organization Event</option>
+            <option value="Celebration">Celebration</option>
+            <option value="Portrait Session">Portrait Session</option>
+            <option value="Other">Other</option>
           </select>
         </div>
-        <input type="hidden" id="shootTime">
+
+        <div>
+          <label class="form-field-label">Organization / Department</label>
+          <input type="text" id="organization" placeholder="e.g. CCIS"
+            class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+        </div>
+
+        <div>
+          <label class="form-field-label">Date</label>
+          <input type="date" id="shootDate" required
+            class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+        </div>
+
+        <div>
+          <label class="form-field-label">Time</label>
+          <div class="glass-input w-full rounded-xl px-3 py-3 flex items-center justify-between gap-1 min-w-0">
+            <span class="text-zinc-500 text-xs shrink-0 pl-1">◷</span>
+            <div class="flex items-center gap-1 flex-1 min-w-0">
+              <select id="timeHour" aria-label="Hour" class="time-select bg-transparent text-sm w-full text-center">
+                <option value="">HH</option>
+                <option>01</option><option>02</option><option>03</option><option>04</option>
+                <option>05</option><option>06</option><option>07</option><option>08</option>
+                <option>09</option><option>10</option><option>11</option><option>12</option>
+              </select>
+              <span class="text-zinc-600 text-xs shrink-0">:</span>
+              <select id="timeMinute" aria-label="Minute" class="time-select bg-transparent text-sm w-full text-center">
+                <option value="">MM</option>
+                <option>00</option><option>05</option><option>10</option><option>15</option>
+                <option>20</option><option>25</option><option>30</option><option>35</option>
+                <option>40</option><option>45</option><option>50</option><option>55</option>
+              </select>
+              <select id="timePeriod" aria-label="AM or PM" class="time-select bg-transparent text-sm shrink-0 font-medium text-zinc-300">
+                <option value="">--</option><option>AM</option><option>PM</option>
+              </select>
+            </div>
+            <input type="hidden" id="shootTime">
+          </div>
+        </div>
+
+        <div>
+          <label class="form-field-label">Location</label>
+          <input type="text" id="location" placeholder="e.g. School Gym"
+            class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+        </div>
+
+        <div>
+          <label class="form-field-label">Backup Status</label>
+          <select id="status" class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+            <option value="Shot">⚠️ Needs Backup</option>
+            <option value="Backup In Progress">⏳ Backup In Progress</option>
+            <option value="Backed Up" selected>✅ Backed Up</option>
+            <option value="Delivered">📦 Delivered</option>
+          </select>
+        </div>
+
+        <div class="sm:col-span-2">
+          <label class="form-field-label">Google Drive Folder URL</label>
+          <input type="url" id="driveUrl" placeholder="https://drive.google.com/drive/folders/..." required
+            class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+        </div>
+
+        <div class="sm:col-span-2">
+          <label class="form-field-label">Cover Image URL (Optional)</label>
+          <input type="url" id="coverUrl" placeholder="https://..."
+            class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
+        </div>
+
+        <div class="sm:col-span-2">
+          <label class="form-field-label">Notes</label>
+          <textarea id="notes" placeholder="Shot list, equipment required, key contacts..."
+            class="glass-input w-full h-24 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition resize-none"></textarea>
+        </div>
       </div>
-    </div>
 
-    <!-- Location & Status -->
-    <div>
-      <label class="form-field-label">Location</label>
-      <input type="text" id="location" placeholder="e.g. School Gym"
-        class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
-    </div>
-
-    <div>
-      <label class="form-field-label">Backup Status</label>
-      <select id="status" class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
-        <option value="Shot">⚠️ Needs Backup</option>
-        <option value="Backup In Progress">⏳ Backup In Progress</option>
-        <option value="Backed Up" selected>✅ Backed Up</option>
-        <option value="Delivered">📦 Delivered</option>
-      </select>
-    </div>
-
-    <!-- Google Drive URL (Full width for long links) -->
-    <div class="sm:col-span-2">
-      <label class="form-field-label">Google Drive Folder URL</label>
-      <input type="url" id="driveUrl" placeholder="https://drive.google.com/drive/folders/..." required
-        class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
-    </div>
-
-    <!-- Cover Image (Optional) -->
-    <div class="sm:col-span-2">
-      <label class="form-field-label">Cover Image URL (Optional)</label>
-      <input type="url" id="coverUrl" placeholder="https://..."
-        class="glass-input w-full rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none transition">
-    </div>
-
-    <!-- Notes -->
-    <div class="sm:col-span-2">
-      <label class="form-field-label">Notes</label>
-      <textarea id="notes" placeholder="Shot list, equipment required, key contacts..."
-        class="glass-input w-full h-24 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition resize-none"></textarea>
-    </div>
-  </div>
-
-  <button type="submit" id="submitBtn"
-    class="w-full bg-white hover:bg-zinc-200 text-black text-sm font-semibold py-3.5 rounded-xl transition active:scale-[.99]">
-    Save to ShotLog
-  </button>
-</form>
+      <button type="submit" id="submitBtn"
+        class="w-full bg-white hover:bg-zinc-200 text-black text-sm font-semibold py-3.5 rounded-xl transition active:scale-[.99]">
+        Save to ShotLog
+      </button>
+    </form>
 
     <!-- Filters -->
     <div class="glass-soft rounded-2xl px-3 pt-3">
@@ -365,10 +353,10 @@
       </div>
     </div>
 
-    <!-- Events -->
+    <!-- Events List -->
     <div id="eventsList" class="space-y-3"></div>
 
-    <!-- Recent -->
+    <!-- Recent Panel -->
     <section id="recentPanel" class="hidden pt-2 pb-8">
       <div class="flex items-center justify-between mb-3">
         <p class="text-[9px] uppercase tracking-[.2em] text-zinc-500">Recent Events</p>
@@ -378,7 +366,7 @@
   </main>
 
   <!-- Event Details Modal -->
-  <div id="eventModal" class="fixed inset-0 z-[80] hidden modal-backdrop p-4 items-center justify-center">
+  <div id="eventModal" class="fixed inset-0 z-[80] hidden modal-backdrop p-4 flex items-center justify-center">
     <div class="glass rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
       <div id="modalContent"></div>
     </div>
@@ -518,23 +506,10 @@
     }
 
     async function fetchEvents() {
-      const startTime = Date.now();
-
       const { data, error } = await _supabase
         .from('events')
         .select('*')
         .order('shoot_date', { ascending: false });
-
-      const elapsedTime = Date.now() - startTime;
-      const remainingTime = Math.max(0, 1200 - elapsedTime);
-
-      setTimeout(() => {
-        const splash = document.getElementById('splashScreen');
-        if (splash) {
-          splash.classList.add('opacity-0', 'pointer-events-none');
-          setTimeout(() => splash.remove(), 700);
-        }
-      }, remainingTime);
 
       if (error) {
         alert('Error fetching events: ' + error.message);
@@ -725,7 +700,7 @@
       const recent = [...allEvents]
         .sort((a, b) => `${b.shoot_date}T${b.shoot_time || '00:00'}`.localeCompare(`${a.shoot_date}T${a.shoot_time || '00:00'}`))
         .slice(0, 4);
-z
+
       if (!recent.length) {
         panel.classList.add('hidden');
         return;
@@ -734,7 +709,7 @@ z
       panel.classList.remove('hidden');
 
       container.innerHTML = recent.map(event => `
-        <button onclick="openEventDetails('${event.id}')" class="glass rounded-2xl p-4 text-left hover:bg-white/[.06] transition">
+        <button onclick="openEventDetails('${event.id}')" class="glass rounded-2xl p-4 text-left hover:bg-white/[.06] transition w-full">
           <div class="flex items-center justify-between gap-3">
             <span class="text-sm text-white truncate">${escapeHtml(event.title)}</span>
             ${statusBadge(event.status)}
@@ -772,7 +747,7 @@ z
               <h2 class="text-2xl font-light">${escapeHtml(event.title)}</h2>
               <div class="mt-2">${statusBadge(event.status)}</div>
             </div>
-            <button onclick="closeEventDetails()" class="glass-soft w-9 h-9 rounded-xl text-zinc-400 hover:text-white transition">×</button>
+            <button onclick="closeEventDetails()" class="glass-soft w-9 h-9 rounded-xl text-zinc-400 hover:text-white transition flex items-center justify-center text-lg">×</button>
           </div>
 
           ${cover}
@@ -798,46 +773,39 @@ z
 
           <div class="glass-soft rounded-2xl p-4 mb-5">
             <div class="flex items-center justify-between mb-3">
-              <div>
-                <p class="text-[9px] uppercase tracking-[.18em] text-zinc-500">Event Checklist</p>
-                <p class="text-xs text-zinc-300 mt-1">${progress.done} / ${progress.total} completed</p>
-              </div>
-              <div class="w-24 h-1.5 bg-white/10 rounded-full overflow-hidden">
-                <div class="h-full bg-white rounded-full" style="width:${(progress.done / progress.total) * 100}%"></div>
-              </div>
+              <p class="text-[9px] uppercase tracking-[.2em] text-zinc-400 font-semibold">Workflow Checklist</p>
+              <span class="text-[10px] text-zinc-500">${progress.done}/${progress.total} Completed</span>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
               ${checklistHtml}
             </div>
           </div>
 
-          <div class="glass-soft rounded-2xl p-4 mb-5">
-            <p class="text-[9px] uppercase tracking-[.18em] text-zinc-500 mb-2">Google Drive</p>
-            <a href="${escapeHtml(event.drive_url || '#')}" target="_blank" rel="noopener noreferrer"
-              class="inline-flex bg-white text-black hover:bg-zinc-200 px-4 py-2.5 rounded-xl text-xs font-semibold transition">
-              Open Google Drive ↗
-            </a>
-          </div>
-
           ${event.notes ? `
             <div class="glass-soft rounded-2xl p-4 mb-5">
-              <p class="text-[9px] uppercase tracking-[.18em] text-zinc-500 mb-2">Notes</p>
-              <p class="text-xs text-zinc-400 whitespace-pre-wrap">${escapeHtml(event.notes)}</p>
-            </div>` : ''}
+              <p class="text-[9px] uppercase tracking-[.2em] text-zinc-400 font-semibold mb-2">Notes</p>
+              <p class="text-xs text-zinc-300 whitespace-pre-wrap">${escapeHtml(event.notes)}</p>
+            </div>
+          ` : ''}
 
-          <div class="flex items-center gap-3">
-            <button onclick="editEvent('${event.id}'); closeEventDetails();" class="flex-1 bg-white hover:bg-zinc-200 text-black text-xs font-semibold py-3 rounded-xl transition">
-              Edit Event
+          <div class="flex items-center justify-between gap-3 pt-2">
+            <button onclick="deleteEvent('${event.id}')" class="text-xs text-red-400 hover:text-red-300 transition px-2 py-1">
+              Delete Event
             </button>
-            <button onclick="deleteEvent('${event.id}')" class="glass-soft hover:bg-red-500/20 text-red-400 text-xs px-4 py-3 rounded-xl transition">
-              Delete
-            </button>
+
+            <div class="flex items-center gap-2">
+              <a href="${escapeHtml(event.drive_url)}" target="_blank" rel="noopener noreferrer"
+                class="bg-white hover:bg-zinc-200 text-black text-xs font-semibold px-4 py-2.5 rounded-xl transition">
+                Open Drive ↗
+              </a>
+            </div>
           </div>
         </div>
       `;
 
-      document.getElementById('eventModal').classList.remove('hidden');
-      document.getElementById('eventModal').classList.add('flex');
+      const modal = document.getElementById('eventModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
     }
 
     function closeEventDetails() {
@@ -846,47 +814,59 @@ z
       modal.classList.remove('flex');
     }
 
-    async function toggleChecklist(id, key, checked) {
-      const event = allEvents.find(e => e.id === id);
+    async function toggleChecklist(eventId, key, checked) {
+      const event = allEvents.find(e => e.id === eventId);
       if (!event) return;
 
-      const updatedChecklist = { ...event.checklist, [key]: checked };
-      const { error } = await _supabase
+      const updatedChecklist = { ...normalizeChecklist(event.checklist), [key]: checked };
+      event.checklist = updatedChecklist;
+
+      await _supabase
         .from('events')
         .update({ checklist: updatedChecklist })
-        .eq('id', id);
+        .eq('id', eventId);
+
+      updateDashboardStats();
+      renderEvents();
+      openEventDetails(eventId);
+    }
+
+    async function deleteEvent(id) {
+      if (!confirm('Are you sure you want to delete this event log?')) return;
+
+      const { error } = await _supabase.from('events').delete().eq('id', id);
 
       if (error) {
-        alert('Error updating checklist: ' + error.message);
+        alert('Error deleting event: ' + error.message);
         return;
       }
 
-      event.checklist = updatedChecklist;
-      renderEvents();
-      openEventDetails(id);
+      closeEventDetails();
+      fetchEvents();
     }
 
     function editEvent(id) {
       const event = allEvents.find(e => e.id === id);
       if (!event) return;
 
-      editingId = event.id;
+      editingId = id;
+
       document.getElementById('formHeading').innerText = 'Edit Event';
-      document.getElementById('submitBtn').innerText = 'Update Event';
       document.getElementById('cancelEditBtn').classList.remove('hidden');
+      document.getElementById('submitBtn').innerText = 'Update Event';
 
       document.getElementById('title').value = event.title || '';
       document.getElementById('eventType').value = event.event_type || 'School Activity';
+      document.getElementById('organization').value = event.organization || '';
       document.getElementById('shootDate').value = event.shoot_date || '';
       setTimePicker(event.shoot_time);
       document.getElementById('location').value = event.location || '';
-      document.getElementById('organization').value = event.organization || '';
       document.getElementById('status').value = event.status || 'Backed Up';
       document.getElementById('driveUrl').value = event.drive_url || '';
       document.getElementById('coverUrl').value = event.cover_url || '';
       document.getElementById('notes').value = event.notes || '';
 
-      window.scrollTo({ top: document.getElementById('eventForm').offsetTop - 20, behavior: 'smooth' });
+      window.scrollTo({ top: form.offsetTop - 20, behavior: 'smooth' });
     }
 
     function resetForm() {
@@ -894,35 +874,23 @@ z
       form.reset();
       setTimePicker('');
       document.getElementById('formHeading').innerText = 'Log New Event';
-      document.getElementById('submitBtn').innerText = 'Save to ShotLog';
       document.getElementById('cancelEditBtn').classList.add('hidden');
-    }
-
-    async function deleteEvent(id) {
-      if (!confirm('Are you sure you want to delete this event?')) return;
-      const { error } = await _supabase.from('events').delete().eq('id', id);
-      if (error) {
-        alert('Error deleting event: ' + error.message);
-        return;
-      }
-      closeEventDetails();
-      fetchEvents();
+      document.getElementById('submitBtn').innerText = 'Save to ShotLog';
     }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      syncTimePicker();
 
       const payload = {
         title: document.getElementById('title').value,
         event_type: document.getElementById('eventType').value,
+        organization: document.getElementById('organization').value,
         shoot_date: document.getElementById('shootDate').value,
         shoot_time: document.getElementById('shootTime').value || null,
         location: document.getElementById('location').value,
-        organization: document.getElementById('organization').value,
         status: document.getElementById('status').value,
         drive_url: document.getElementById('driveUrl').value,
-        cover_url: document.getElementById('coverUrl').value,
+        cover_url: document.getElementById('coverUrl').value || null,
         notes: document.getElementById('notes').value
       };
 
@@ -931,40 +899,21 @@ z
           .from('events')
           .update(payload)
           .eq('id', editingId);
-        if (error) { alert('Error updating event: ' + error.message); return; }
+
+        if (error) return alert('Error updating event: ' + error.message);
       } else {
-        payload.checklist = defaultChecklist;
         const { error } = await _supabase
           .from('events')
-          .insert([payload]);
-        if (error) { alert('Error creating event: ' + error.message); return; }
+          .insert([{ ...payload, checklist: defaultChecklist }]);
+
+        if (error) return alert('Error adding event: ' + error.message);
       }
 
       resetForm();
       fetchEvents();
     });
 
-    const searchInput = document.getElementById('searchInput');
-    const clearSearch = document.getElementById('clearSearch');
-
-    searchInput.addEventListener('input', (e) => {
-      searchTerm = e.target.value;
-      if (searchTerm) {
-        clearSearch.classList.remove('hidden');
-      } else {
-        clearSearch.classList.add('hidden');
-      }
-      renderEvents();
-    });
-
-    clearSearch.addEventListener('click', () => {
-      searchInput.value = '';
-      searchTerm = '';
-      clearSearch.classList.add('hidden');
-      renderEvents();
-    });
-
-    // Google Auth Handlers
+    // Authentication Handlers
     async function signInWithGoogle() {
       const { error } = await _supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -983,14 +932,24 @@ z
       const loginCard = document.getElementById('loginCard');
       const splash = document.getElementById('splashScreen');
 
+      if (splash) {
+        splash.classList.add('opacity-0', 'pointer-events-none');
+        setTimeout(() => splash.remove(), 700);
+      }
+
       if (session) {
         if (loginCard) loginCard.classList.add('hidden');
         fetchEvents();
       } else {
         if (loginCard) loginCard.classList.remove('hidden');
-        if (splash) splash.remove();
       }
     });
+
+    // Fallback timer to hide splash screen if auth resolution takes long
+    setTimeout(() => {
+      const splash = document.getElementById('splashScreen');
+      if (splash) splash.remove();
+    }, 2500);
   </script>
 </body>
 </html>
