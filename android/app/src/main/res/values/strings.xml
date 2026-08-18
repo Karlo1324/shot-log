@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Shot Log</string>
+    <string name="title_activity_main">Shot Log</string>
+    <string name="package_name">com.karl.shotlog</string>
+    <string name="custom_url_scheme">com.karl.shotlog</string>
+</resources>
