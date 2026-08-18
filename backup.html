@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ShotLog — Backup Overview</title>
+<title>ShotLog — Backup</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#050505">
 <script src="https://cdn.tailwindcss.com"></script>
@@ -200,7 +200,7 @@ select.glass-input option {
           ShotLog
         </p>
         <p class="text-xs text-zinc-400 mt-1">
-          Event Archive
+          Event Backup
         </p>
       </div>
     </div>
@@ -245,7 +245,7 @@ select.glass-input option {
           <label class="form-field-label">Backup Status</label>
           <select id="status"
                   class="glass-input w-full rounded-xl px-4 py-3 sm:py-3.5 text-sm focus:outline-none transition">
-            <option value="Shot">⚠️ Needs Backup</option>
+            <option value="Shot" selected>⚠️ Needs Backup</option>
             <option value="Backup In Progress">⏳ Backup In Progress</option>
             <option value="Backed Up">✅ Backed Up</option>
             <option value="Delivered">📦 Delivered</option>
@@ -407,6 +407,65 @@ select.glass-input option {
 
   </section>
 
+  <!-- SECOND PANEL: BACKUP OVERVIEW + NOT YET BACKED UP EVENTS -->
+  <section class="glass rounded-3xl p-5 md:p-6 animate-fade-in">
+
+    <div class="flex items-center justify-between gap-4 mb-5">
+      <div>
+        <p class="text-[10px] uppercase tracking-[.22em] text-zinc-400 font-semibold">
+          Backup Overview
+        </p>
+        <p class="text-[11px] text-zinc-500 mt-1">
+          Only events that still need backup are shown below.
+        </p>
+      </div>
+
+      <button type="button" onclick="loadBackupOverview()"
+              class="text-[9px] tracking-[.18em] uppercase px-3 py-1.5 rounded-full glass-soft text-zinc-400 hover:text-white transition">
+        Refresh
+      </button>
+    </div>
+
+    <!-- Backup summary -->
+    <div class="grid grid-cols-3 gap-3 mb-4">
+      <div class="glass-soft rounded-2xl p-4 text-center">
+        <p class="text-[9px] uppercase tracking-[.18em] text-zinc-500">Total Events</p>
+        <p id="backupTotal" class="text-2xl font-semibold mt-1">0</p>
+      </div>
+
+      <div class="glass-soft rounded-2xl p-4 text-center border-white/25">
+        <p class="text-[9px] uppercase tracking-[.18em] text-zinc-300">Needs Backup</p>
+        <p id="backupPending" class="text-2xl font-semibold mt-1">0</p>
+      </div>
+
+      <div class="glass-soft rounded-2xl p-4 text-center">
+        <p class="text-[9px] uppercase tracking-[.18em] text-zinc-500">Backed Up</p>
+        <p id="backupDone" class="text-2xl font-semibold mt-1">0</p>
+      </div>
+    </div>
+
+    <!-- Events not yet backed up -->
+    <div class="glass-soft rounded-2xl p-4 md:p-5">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <p class="text-[9px] uppercase tracking-[.2em] text-zinc-400 font-semibold">
+            Events Not Yet Backed Up
+          </p>
+          <p class="text-[10px] text-zinc-600 mt-1">
+            These events still require backup work.
+          </p>
+        </div>
+      </div>
+
+      <div id="backupEventsList" class="space-y-3">
+        <div class="text-center py-8 text-zinc-600 text-[10px] uppercase tracking-[.15em]">
+          Loading events...
+        </div>
+      </div>
+    </div>
+
+  </section>
+
 </main>
 
 <script>
@@ -459,6 +518,213 @@ function syncTimePicker() {
 ['timeHour', 'timeMinute', 'timePeriod'].forEach(id => {
   document.getElementById(id).addEventListener('change', syncTimePicker);
 });
+
+function backupStatusBadge(status) {
+  if (status === 'Shot') {
+    return `<span class="text-[9px] px-2.5 py-1 rounded-full bg-white text-black font-bold uppercase tracking-wider">⚠️ Needs Backup</span>`;
+  }
+
+  if (status === 'Backup In Progress') {
+    return `<span class="text-[9px] px-2.5 py-1 rounded-full bg-white/10 text-zinc-200 border border-white/10">⏳ In Progress</span>`;
+  }
+
+  if (status === 'Backed Up') {
+    return `<span class="text-[9px] px-2.5 py-1 rounded-full bg-white/10 text-zinc-200 border border-white/10">✓ Backed Up</span>`;
+  }
+
+  return `<span class="text-[9px] px-2.5 py-1 rounded-full bg-white/5 text-zinc-400 border border-white/10">📦 Delivered</span>`;
+}
+
+function escapeHtml(value = '') {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+async function loadBackupOverview() {
+  const list = document.getElementById('backupEventsList');
+
+  const { data, error } = await _supabase
+    .from('events')
+    .select('*')
+    .order('shoot_date', { ascending: true });
+
+  if (error) {
+    list.innerHTML = `
+      <div class="text-center py-8 text-red-400 text-xs">
+        Unable to load backup events.
+      </div>`;
+    return;
+  }
+
+  const events = data || [];
+  const pendingEvents = events.filter(e =>
+    e.status === 'Shot' || e.status === 'Backup In Progress'
+  );
+  const pending = events.filter(e => e.status === 'Shot').length;
+  const done = events.filter(e =>
+    e.status === 'Backed Up' || e.status === 'Delivered'
+  ).length;
+
+  document.getElementById('backupTotal').innerText = events.length;
+  document.getElementById('backupPending').innerText = pending;
+  document.getElementById('backupDone').innerText = done;
+
+  if (!pendingEvents.length) {
+    list.innerHTML = `
+      <div class="text-center py-10">
+        <div class="text-2xl opacity-30 mb-2">✓</div>
+        <p class="text-zinc-500 text-xs">All events are backed up.</p>
+        <p class="text-zinc-700 text-[9px] uppercase tracking-[.15em] mt-2">
+          Nothing needs backup right now
+        </p>
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = pendingEvents.map(event => `
+    <div class="glass rounded-2xl p-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="min-w-0">
+          <div class="flex items-center gap-2 flex-wrap">
+            <p class="text-sm text-white font-medium truncate">
+              ${escapeHtml(event.title || 'Untitled Event')}
+            </p>
+            ${backupStatusBadge(event.status)}
+          </div>
+
+          <p class="text-[10px] text-zinc-500 mt-2">
+            ${event.shoot_date || 'No date'}
+            ${event.location ? ` • ${escapeHtml(event.location)}` : ''}
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0">
+          ${event.drive_url ? `
+            <a href="${escapeHtml(event.drive_url)}"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="bg-white hover:bg-zinc-200 text-black text-[10px] font-semibold px-3 py-2 rounded-xl transition">
+              Drive ↗
+            </a>
+          ` : ''}
+
+          <button type="button"
+                  onclick="showBackupChecklist('${event.id}')"
+                  class="glass-soft hover:bg-white/10 text-zinc-300 text-[10px] px-3 py-2 rounded-xl transition">
+            Checklist
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function showBackupChecklist(id) {
+  const { data: event, error } = await _supabase
+    .from('events')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error || !event) {
+    alert('Unable to load this backup event.');
+    return;
+  }
+
+  const checklist = {
+    ...defaultChecklist,
+    ...(event.checklist || {})
+  };
+
+  const labels = {
+    camera_ready: 'Camera ready',
+    batteries_ready: 'Batteries ready',
+    memory_card_ready: 'Memory card ready',
+    photos_transferred: 'Photos transferred',
+    photos_organized: 'Photos organized',
+    photos_edited: 'Photos edited',
+    uploaded_to_drive: 'Uploaded to Google Drive',
+    drive_link_added: 'Google Drive link added'
+  };
+
+  const completed = Object.values(checklist).filter(Boolean).length;
+
+  const rows = Object.entries(labels).map(([key, label]) => `
+    <label class="flex items-center gap-3 p-3 rounded-xl glass-soft cursor-pointer hover:bg-white/[.06] transition">
+      <input type="checkbox"
+             ${checklist[key] ? 'checked' : ''}
+             onchange="updateBackupChecklist('${event.id}', '${key}', this.checked)"
+             class="w-4 h-4 accent-white">
+      <span class="text-xs ${checklist[key] ? 'text-zinc-300 line-through' : 'text-zinc-400'}">
+        ${label}
+      </span>
+    </label>
+  `).join('');
+
+  document.getElementById('backupChecklistContent').innerHTML = `
+    <div class="flex items-start justify-between gap-4 mb-5">
+      <div>
+        <p class="text-[9px] uppercase tracking-[.2em] text-zinc-500 mb-2">
+          Backup Checklist
+        </p>
+        <h2 class="text-xl font-light">${escapeHtml(event.title)}</h2>
+        <p class="text-[10px] text-zinc-500 mt-1">
+          ${completed}/8 Completed
+        </p>
+      </div>
+
+      <button type="button"
+              onclick="closeBackupChecklist()"
+              class="glass-soft w-9 h-9 rounded-xl text-zinc-400 hover:text-white transition text-lg">
+        ×
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+      ${rows}
+    </div>
+  `;
+
+  const modal = document.getElementById('backupChecklistModal');
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+
+async function updateBackupChecklist(eventId, key, checked) {
+  const { data: event } = await _supabase
+    .from('events')
+    .select('checklist')
+    .eq('id', eventId)
+    .single();
+
+  const updatedChecklist = {
+    ...defaultChecklist,
+    ...((event && event.checklist) || {}),
+    [key]: checked
+  };
+
+  const { error } = await _supabase
+    .from('events')
+    .update({ checklist: updatedChecklist })
+    .eq('id', eventId);
+
+  if (error) {
+    alert('Error updating checklist: ' + error.message);
+    return;
+  }
+
+  loadBackupOverview();
+}
+
+function closeBackupChecklist() {
+  const modal = document.getElementById('backupChecklistModal');
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+}
 
 async function saveBackup() {
 
@@ -521,7 +787,7 @@ async function saveBackup() {
   document.getElementById('timePeriod').value = '';
   document.getElementById('shootTime').value = '';
   document.getElementById('location').value = '';
-  document.getElementById('status').value = 'Backed Up';
+  document.getElementById('status').value = 'Shot';
   document.getElementById('driveUrl').value = '';
   document.getElementById('coverUrl').value = '';
   document.getElementById('notes').value = '';
@@ -548,11 +814,23 @@ _supabase.auth.onAuthStateChange((event, session) => {
         `Welcome, <span class="text-white font-medium">${userName}</span>`;
     }
 
+    loadBackupOverview();
+
   } else {
     window.location.href = 'index.html';
   }
 });
 </script>
+
+<!-- Backup Checklist Modal -->
+<div id="backupChecklistModal"
+     class="fixed inset-0 z-[80] hidden modal-backdrop p-4 items-center justify-center">
+
+  <div class="glass rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+    <div id="backupChecklistContent" class="p-5 md:p-6"></div>
+  </div>
+
+</div>
 
 </body>
 </html>
