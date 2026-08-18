@@ -335,6 +335,48 @@ const checklistLabels = {
 
 
 // --- Helper for handling existing text orgs vs new JSON orgs ---
+
+function escapeHtml(value = '') {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+function normalizeChecklist(checklist) {
+  return { ...defaultChecklist, ...(checklist || {}) };
+}
+
+function checklistProgress(event) {
+  const c = normalizeChecklist(event.checklist);
+  const values = Object.values(c);
+  const done = values.filter(Boolean).length;
+  return { done, total: values.length };
+}
+
+function isBackedUp(event) {
+  return event.status === 'Backed Up' || event.status === 'Delivered';
+}
+
+function formatDate(dateString) {
+  if (!dateString) return 'No date';
+  const d = new Date(dateString + 'T00:00:00');
+  return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function formatTime(timeString) {
+  if (!timeString) return '';
+  const parts = String(timeString).split(':');
+  if (parts.length < 2) return timeString;
+  let h = Number(parts[0]);
+  const m = parts[1];
+  const period = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  return `${String(h).padStart(2, '0')}:${m} ${period}`;
+}
+
 function parseOrganization(org) {
     if (!org) return { department: null, subUnit: null };
     if (typeof org === 'object') return org;

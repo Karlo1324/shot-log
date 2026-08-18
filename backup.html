@@ -188,10 +188,10 @@ select.glass-input option {
     <div class="flex items-center justify-between gap-4 mb-5">
       <div>
         <p class="text-[10px] uppercase tracking-[.22em] text-zinc-400 font-semibold">
-          Backup Overview
+          Add New Event
         </p>
         <p class="text-[11px] text-zinc-500 mt-1">
-          Add and organize the information for your school photography backup.
+          Add a new school photography event and set its backup status.
         </p>
       </div>
 
@@ -398,12 +398,20 @@ select.glass-input option {
     </div>
 
     <!-- ACTION -->
-    <button type="button"
-            id="saveBtn"
-            onclick="saveBackup()"
-            class="w-full bg-white hover:bg-zinc-200 text-black text-sm font-semibold py-3.5 rounded-xl transition active:scale-[.99]">
-      Save to ShotLog
-    </button>
+    <div class="flex gap-2">
+      <button type="button"
+              id="cancelEditBtn"
+              onclick="resetBackupForm()"
+              class="hidden flex-1 glass-soft hover:bg-white/10 text-zinc-300 text-sm font-semibold py-3.5 rounded-xl transition">
+        Cancel
+      </button>
+      <button type="button"
+              id="saveBtn"
+              onclick="saveBackup()"
+              class="flex-1 bg-white hover:bg-zinc-200 text-black text-sm font-semibold py-3.5 rounded-xl transition active:scale-[.99]">
+        Save to ShotLog
+      </button>
+    </div>
 
   </section>
 
@@ -413,7 +421,7 @@ select.glass-input option {
     <div class="flex items-center justify-between gap-4 mb-5">
       <div>
         <p class="text-[10px] uppercase tracking-[.22em] text-zinc-400 font-semibold">
-          Backup Overview
+          <span id="formHeading">Add New Event</span>
         </p>
         <p class="text-[11px] text-zinc-500 mt-1">
           Only events that still need backup are shown below.
@@ -472,6 +480,8 @@ select.glass-input option {
 const SUPABASE_URL = 'https://mfgifshxxikabamzoatf.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_7_V6DnFz8WDy9bMk9weVFg_7nHLZtsQ';
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let editingId = null;
 
 const defaultChecklist = {
   camera_ready: false,
@@ -613,6 +623,12 @@ async function loadBackupOverview() {
           ` : ''}
 
           <button type="button"
+                  onclick="editBackupEvent('${event.id}')"
+                  class="glass-soft hover:bg-white/10 text-zinc-300 text-[10px] px-3 py-2 rounded-xl transition">
+            Edit
+          </button>
+
+          <button type="button"
                   onclick="showBackupChecklist('${event.id}')"
                   class="glass-soft hover:bg-white/10 text-zinc-300 text-[10px] px-3 py-2 rounded-xl transition">
             Checklist
@@ -726,8 +742,103 @@ function closeBackupChecklist() {
   modal.classList.remove('flex');
 }
 
-async function saveBackup() {
+function setTimePicker(timeString = '') {
+  document.getElementById('timeHour').value = '';
+  document.getElementById('timeMinute').value = '';
+  document.getElementById('timePeriod').value = '';
+  document.getElementById('shootTime').value = timeString || '';
 
+  if (!timeString) return;
+
+  const [hh, mm] = String(timeString).split(':');
+  let h = Number(hh);
+  if (!Number.isFinite(h)) return;
+
+  const period = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+
+  document.getElementById('timeHour').value = String(h).padStart(2, '0');
+  document.getElementById('timeMinute').value = mm || '00';
+  document.getElementById('timePeriod').value = period;
+}
+
+function resetBackupForm() {
+  editingId = null;
+  document.getElementById('title').value = '';
+  document.getElementById('eventType').value = 'School Activity';
+  document.getElementById('orgDepartment').value = '';
+  document.getElementById('orgDepartmentOther').value = '';
+  document.getElementById('orgDepartmentOther').classList.add('hidden');
+  document.getElementById('orgSubUnit').value = '';
+  document.getElementById('shootDate').value = '';
+  setTimePicker('');
+  document.getElementById('location').value = '';
+  document.getElementById('status').value = 'Shot';
+  document.getElementById('driveUrl').value = '';
+  document.getElementById('coverUrl').value = '';
+  document.getElementById('notes').value = '';
+
+  document.getElementById('formHeading').innerText = 'Add New Event';
+  document.getElementById('saveBtn').innerText = 'Save to ShotLog';
+  document.getElementById('cancelEditBtn').classList.add('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function editBackupEvent(id) {
+  const { data: event, error } = await _supabase
+    .from('events')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error || !event) {
+    alert('Unable to load this event.');
+    return;
+  }
+
+  editingId = id;
+
+  document.getElementById('formHeading').innerText = 'Edit Event';
+  document.getElementById('saveBtn').innerText = 'Update Event';
+  document.getElementById('cancelEditBtn').classList.remove('hidden');
+
+  document.getElementById('title').value = event.title || '';
+  document.getElementById('eventType').value = event.event_type || 'School Activity';
+
+  let org = event.organization || {};
+  if (typeof org === 'string') {
+    try { org = JSON.parse(org); }
+    catch { org = { department: org, subUnit: '' }; }
+  }
+
+  const standardDepts = ['CCIS', 'CBA', 'CAS', 'CED', ''];
+  const dept = org.department || '';
+  const deptSelect = document.getElementById('orgDepartment');
+  const deptOther = document.getElementById('orgDepartmentOther');
+
+  if (dept && !standardDepts.includes(dept)) {
+    deptSelect.value = 'Other';
+    deptOther.value = dept;
+    deptOther.classList.remove('hidden');
+  } else {
+    deptSelect.value = dept;
+    deptOther.value = '';
+    deptOther.classList.add('hidden');
+  }
+
+  document.getElementById('orgSubUnit').value = org.subUnit || '';
+  document.getElementById('shootDate').value = event.shoot_date || '';
+  setTimePicker(event.shoot_time || '');
+  document.getElementById('location').value = event.location || '';
+  document.getElementById('status').value = event.status || 'Shot';
+  document.getElementById('driveUrl').value = event.drive_url || '';
+  document.getElementById('coverUrl').value = event.cover_url || '';
+  document.getElementById('notes').value = event.notes || '';
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function saveBackup() {
   const title = document.getElementById('title').value.trim();
   const shootDate = document.getElementById('shootDate').value;
   const driveUrl = document.getElementById('driveUrl').value.trim();
@@ -738,59 +849,47 @@ async function saveBackup() {
   }
 
   let dept = document.getElementById('orgDepartment').value;
-
-  if (dept === 'Other') {
-    dept = document.getElementById('orgDepartmentOther').value.trim();
-  }
-
-  const subUnit = document.getElementById('orgSubUnit').value.trim();
+  if (dept === 'Other') dept = document.getElementById('orgDepartmentOther').value.trim();
 
   const organization = {
     department: dept || null,
-    subUnit: subUnit || null
+    subUnit: document.getElementById('orgSubUnit').value.trim() || null
   };
 
   const payload = {
-    title: title,
+    title,
     event_type: document.getElementById('eventType').value,
-    organization: organization,
+    organization,
     shoot_date: shootDate,
     shoot_time: document.getElementById('shootTime').value || null,
     location: document.getElementById('location').value.trim(),
     status: document.getElementById('status').value,
     drive_url: driveUrl,
     cover_url: document.getElementById('coverUrl').value.trim() || null,
-    notes: document.getElementById('notes').value.trim(),
-    checklist: defaultChecklist
+    notes: document.getElementById('notes').value.trim()
   };
 
-  const { error } = await _supabase
-    .from('events')
-    .insert([payload]);
+  let error;
+
+  if (editingId) {
+    ({ error } = await _supabase
+      .from('events')
+      .update(payload)
+      .eq('id', editingId));
+  } else {
+    ({ error } = await _supabase
+      .from('events')
+      .insert([{ ...payload, checklist: defaultChecklist }]));
+  }
 
   if (error) {
-    alert('Error adding backup: ' + error.message);
+    alert((editingId ? 'Error updating event: ' : 'Error adding event: ') + error.message);
     return;
   }
 
-  alert('Backup overview saved successfully.');
-
-  document.getElementById('title').value = '';
-  document.getElementById('eventType').value = 'School Activity';
-  document.getElementById('orgDepartment').value = '';
-  document.getElementById('orgDepartmentOther').value = '';
-  document.getElementById('orgDepartmentOther').classList.add('hidden');
-  document.getElementById('orgSubUnit').value = '';
-  document.getElementById('shootDate').value = '';
-  document.getElementById('timeHour').value = '';
-  document.getElementById('timeMinute').value = '';
-  document.getElementById('timePeriod').value = '';
-  document.getElementById('shootTime').value = '';
-  document.getElementById('location').value = '';
-  document.getElementById('status').value = 'Shot';
-  document.getElementById('driveUrl').value = '';
-  document.getElementById('coverUrl').value = '';
-  document.getElementById('notes').value = '';
+  alert(editingId ? 'Event updated successfully.' : 'Event added successfully.');
+  resetBackupForm();
+  loadBackupOverview();
 }
 
 async function signOut() {
