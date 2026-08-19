@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>ShotLog — School Photography by Karlo Famoso</title>
+<title>ShotLog — School Photography</title>
 <link href="manifest.json" rel="manifest"/>
 <meta content="#050505" name="theme-color"/>
 <script src="https://cdn.tailwindcss.com"></script>
@@ -328,8 +328,12 @@ Event</p>
 
      if (!session) return;
 
-     const { data, error } = await _supabase.rpc('get_my_role');
-     if (!error && data) currentRole = String(data).toLowerCase();
+     try {
+       const { data, error } = await _supabase.rpc('get_my_role');
+       if (!error && data) currentRole = String(data).toLowerCase();
+     } catch (err) {
+       console.warn('Role lookup unavailable; using Viewer:', err);
+     }
 
      const badge = document.getElementById('accessBadge');
      if (badge) {
@@ -388,6 +392,10 @@ function checklistProgress(event) {
 
 function isBackedUp(event) {
   return event.status === 'Backed Up' || event.status === 'Delivered';
+}
+
+function needsBackup(event) {
+  return event.status === 'Shot' || event.status === 'Backup In Progress';
 }
 
 function formatDate(dateString) {
@@ -461,7 +469,14 @@ text-zinc-400 border border-white/10">    📦 Delivered</span>`;
 
 
        if (error) {
-           alert('Error fetching events: ' + error.message);
+           console.error('Error fetching events:', error);
+           if (eventsList) {
+             eventsList.innerHTML = `
+               <div class="glass rounded-3xl text-center py-10">
+                 <p class="text-red-400 text-xs">Unable to load events.</p>
+                 <p class="text-zinc-600 text-[10px] mt-2">${escapeHtml(error.message)}</p>
+               </div>`;
+           }
            return;
        }
 

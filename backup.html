@@ -653,7 +653,9 @@ async function loadBackupOverview() {
   const pendingEvents = events.filter(e =>
     e.status === 'Shot' || e.status === 'Backup In Progress'
   );
-  const pending = events.filter(e => e.status === 'Shot').length;
+  const pending = events.filter(e =>
+    e.status === 'Shot' || e.status === 'Backup In Progress'
+  ).length;
   const done = events.filter(e =>
     e.status === 'Backed Up' || e.status === 'Delivered'
   ).length;
