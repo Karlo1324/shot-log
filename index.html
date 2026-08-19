@@ -461,6 +461,14 @@ text-zinc-400 border border-white/10">    📦 Delivered</span>`;
    }
 
 
+   function visibilityBadge(event) {
+       if (!canEdit()) return '';
+       const visibility = event.visibility || 'public';
+       return visibility === 'private'
+         ? `<span class="text-[9px] px-2 py-1 rounded-lg glass-soft text-zinc-400">🔒 Private</span>`
+         : `<span class="text-[9px] px-2 py-1 rounded-lg glass-soft text-zinc-400">🔓 Public</span>`;
+   }
+
    async function fetchEvents() {
        const { data, error } = await _supabase
            .from('events')
@@ -657,6 +665,7 @@ text-zinc-500">
                       Checklist ${progress.done}/${progress.total}
                  </span>
                  ${orgChips}
+                 ${visibilityBadge(event)}
                </div>
               </div>
 
@@ -816,6 +825,12 @@ text-zinc-600">Department</p>
 escapeHtml(org.department) : 'Not set'}</p>
            ${org.subUnit ? `<p class="text-[9px] uppercase tracking-wider text-zinc-600 mt-2">Sub-unit / Committee</p><p class="text-xs text-zinc-400 mt-1">${escapeHtml(org.subUnit)}</p>` : ''}
            </div>
+           ${canEdit() ? `
+             <div class="glass-soft rounded-2xl p-3">
+               <p class="text-[9px] uppercase tracking-wider text-zinc-600">Visibility</p>
+               <p class="text-xs text-zinc-300 mt-1">${event.visibility === 'private' ? '🔒 Private' : '🔓 Public'}</p>
+             </div>
+           ` : ''}
          </div>
 
 
@@ -846,10 +861,12 @@ escapeHtml(org.department) : 'Not set'}</p>
 
 
            <div class="flex items-center gap-2">
-              <a href="${escapeHtml(event.drive_url)}" target="_blank" rel="noopener noreferrer"
-                class="bg-white hover:bg-zinc-200 text-black text-xs font-semibold px-4 py-2.5 rounded-xl transition">
-                Open Drive ↗
-              </a>
+              ${event.visibility !== 'private' || canEdit() ? `
+                <a href="${escapeHtml(event.drive_url)}" target="_blank" rel="noopener noreferrer"
+                  class="bg-white hover:bg-zinc-200 text-black text-xs font-semibold px-4 py-2.5 rounded-xl transition">
+                  Open Drive ↗
+                </a>
+              ` : ''}
            </div>
          </div>
               </div>
