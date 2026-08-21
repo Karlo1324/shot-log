@@ -446,18 +446,18 @@ function organizationMatches(event, { department = '', subUnit = '' } = {}) {
        }
        if (status === 'Shot') {
            return `<span class="text-[10px] px-2.5 py-1 rounded-full bg-white text-black
-font-bold uppercase tracking-wider">    ⚠️ Needs Backup</span>`;
+font-bold uppercase tracking-wider">     Needs Backup</span>`;
        }
        if (status === 'Backup In Progress') {
            return `<span class="text-[10px] px-2.5 py-1 rounded-full bg-white/10
-text-zinc-200 border border-white/10">    ⏳ In Progress</span>`;
+text-zinc-200 border border-white/10">     In Progress</span>`;
        }
        if (status === 'Backed Up') {
            return `<span class="text-[10px] px-2.5 py-1 rounded-full bg-white/10
 text-zinc-200 border border-white/10">✓ Backed Up</span>`;
        }
        return `<span class="text-[10px] px-2.5 py-1 rounded-full bg-white/5
-text-zinc-400 border border-white/10">    📦 Delivered</span>`;
+text-zinc-400 border border-white/10">     Delivered</span>`;
    }
 
 
@@ -621,7 +621,17 @@ md:h-20 rounded-2xl object-cover border border-white/10 shrink-0">`
 items-center justify-center text-xl text-zinc-600">     📷</div>`;
         const time = formatTime(event.shoot_time);
         const meta = [
-            `📅 ${formatDate(event.shoot_date)}`,
+            `<script>
+import { createIcons, Calendars } from 'lucide';
+
+createIcons({
+  icons: {
+    Calendars
+  }
+});
+</script>
+
+<i data-lucide="calendars"></i>  ${formatDate(event.shoot_date)}`,
             time ? `🕐 ${time}` : '',
             event.location ? `📍 ${escapeHtml(event.location)}` : ''
         ].filter(Boolean).join(' <span class="text-zinc-700 mx-1">•</span> ');
