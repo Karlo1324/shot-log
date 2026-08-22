@@ -160,11 +160,9 @@ select.glass-input option {
            class="w-11 h-11 rounded-2xl border border-white/10 object-cover">
 
       <div>
-        <h1 class="text-xl font-light tracking-wide">
-          Shot<span class="font-bold">Log</span>
+        <h1 class="text-xl font-light tracking-wide"> Shot<span class="font-bold">Log</span>
         </h1>
-        <p id="userGreeting" class="text-[11px] text-zinc-400">
-          Backup Overview
+        <p id="userGreeting" class="text-[11px] text-zinc-400"> Backup Overview
         </p>
       </div>
     </div>
@@ -172,13 +170,11 @@ select.glass-input option {
     <div class="flex items-center gap-2">
       <span id="accessBadge" class="inline-flex text-[8px] tracking-[.16em] uppercase px-2.5 py-1.5 rounded-full glass-soft text-zinc-500"></span>
       <a href="index.html"
-         class="text-[9px] tracking-[.18em] uppercase px-3 py-1.5 rounded-full glass-soft text-zinc-400 hover:text-white transition">
-        Back
+         class="text-[9px] tracking-[.18em] uppercase px-3 py-1.5 rounded-full glass-soft text-zinc-400 hover:text-white transition"> Back
       </a>
 
       <button onclick="signOut()"
-         class="text-[9px] tracking-[.18em] uppercase px-3 py-1.5 rounded-full glass-soft text-zinc-400 hover:text-white transition">
-        Sign Out
+         class="text-[9px] tracking-[.18em] uppercase px-3 py-1.5 rounded-full glass-soft text-zinc-400 hover:text-white transition"> Sign Out
       </button>
     </div>
   </header>
@@ -188,20 +184,16 @@ select.glass-input option {
 
     <div class="flex items-center justify-between gap-4 mb-5">
       <div>
-        <p class="text-[10px] uppercase tracking-[.22em] text-zinc-400 font-semibold">
-          Add New Event
+        <p class="text-[10px] uppercase tracking-[.22em] text-zinc-400 font-semibold"> Add New Event
         </p>
-        <p class="text-[11px] text-zinc-500 mt-1">
-          Add a new school photography event and set its backup status.
+        <p class="text-[11px] text-zinc-500 mt-1"> Add a new school photography event and set its backup status.
         </p>
       </div>
 
       <div class="hidden sm:block text-right">
-        <p class="text-[9px] uppercase tracking-[.18em] text-zinc-600">
-          ShotLog
+        <p class="text-[9px] uppercase tracking-[.18em] text-zinc-600"> ShotLog
         </p>
-        <p class="text-xs text-zinc-400 mt-1">
-          Event Backup
+        <p class="text-xs text-zinc-400 mt-1"> Event Backup
         </p>
       </div>
     </div>
@@ -209,8 +201,7 @@ select.glass-input option {
     <!-- EVENT INFORMATION -->
     <div class="glass-soft rounded-2xl p-4 md:p-5 mb-4">
       <div class="mb-4">
-        <p class="text-[9px] uppercase tracking-[.2em] text-zinc-400 font-semibold">
-          Event Information
+        <p class="text-[9px] uppercase tracking-[.2em] text-zinc-400 font-semibold"> Event Information
         </p>
       </div>
 
@@ -246,12 +237,12 @@ select.glass-input option {
           <label class="form-field-label">Backup Status</label>
           <select id="status"
                   class="glass-input w-full rounded-xl px-4 py-3 sm:py-3.5 text-sm focus:outline-none transition">
-            <option value="Upcoming">📅 Upcoming</option>
-            <option value="Event Ongoing">🎥 Event Ongoing</option>
+            <option value="Upcoming"> Upcoming</option>
+            <option value="Event Ongoing"> Event Ongoing</option>
             <option value="Shot" selected>⚠️ Needs Backup</option>
             <option value="Backup In Progress">⏳ Backup In Progress</option>
-            <option value="Backed Up">✅ Backed Up</option>
-            <option value="Delivered">📦 Delivered</option>
+            <option value="Backed Up"> Backed Up</option>
+            <option value="Delivered"> Delivered</option>
           </select>
         </div>
 
@@ -259,8 +250,8 @@ select.glass-input option {
           <label class="form-field-label">Event Visibility</label>
           <select id="eventVisibility"
                   class="glass-input w-full rounded-xl px-4 py-3 sm:py-3.5 text-sm focus:outline-none transition">
-            <option value="public">🔓 Public — viewers can see this event</option>
-            <option value="private">🔒 Private — viewers cannot see this event</option>
+            <option value="public"> Public — viewers can see this event</option>
+            <option value="private"> Private — viewers cannot see this event</option>
           </select>
           <p class="text-[10px] text-zinc-600 mt-2">Only admins can change this setting.</p>
         </div>
@@ -287,8 +278,7 @@ select.glass-input option {
           </div>
 
           <div>
-            <label class="form-field-label">
-              Sub-unit / Committee
+            <label class="form-field-label"> Sub-unit / Committee
               <span class="text-zinc-600 lowercase tracking-normal">(Optional)</span>
             </label>
 
@@ -305,8 +295,7 @@ select.glass-input option {
     <!-- SCHEDULE -->
     <div class="glass-soft rounded-2xl p-4 md:p-5 mb-4">
       <div class="mb-4">
-        <p class="text-[9px] uppercase tracking-[.2em] text-zinc-400 font-semibold">
-          Schedule & Location
+        <p class="text-[9px] uppercase tracking-[.2em] text-zinc-400 font-semibold"> Schedule & Location
         </p>
       </div>
 
@@ -376,8 +365,7 @@ select.glass-input option {
     <!-- BACKUP INFORMATION -->
     <div class="glass-soft rounded-2xl p-4 md:p-5 mb-4">
       <div class="mb-4">
-        <p class="text-[9px] uppercase tracking-[.2em] text-zinc-400 font-semibold">
-          Backup Information
+        <p class="text-[9px] uppercase tracking-[.2em] text-zinc-400 font-semibold"> Backup Information
         </p>
       </div>
 
@@ -415,14 +403,12 @@ select.glass-input option {
       <button type="button"
               id="cancelEditBtn"
               onclick="resetBackupForm()"
-              class="hidden flex-1 glass-soft hover:bg-white/10 text-zinc-300 text-sm font-semibold py-3.5 rounded-xl transition">
-        Cancel
+              class="hidden flex-1 glass-soft hover:bg-white/10 text-zinc-300 text-sm font-semibold py-3.5 rounded-xl transition"> Cancel
       </button>
       <button type="button"
               id="saveBtn"
               onclick="saveBackup()"
-              class="flex-1 bg-white hover:bg-zinc-200 text-black text-sm font-semibold py-3.5 rounded-xl transition active:scale-[.99]">
-        Save to ShotLog
+              class="flex-1 bg-white hover:bg-zinc-200 text-black text-sm font-semibold py-3.5 rounded-xl transition active:scale-[.99]"> Save to ShotLog
       </button>
     </div>
 
@@ -436,14 +422,12 @@ select.glass-input option {
         <p class="text-[10px] uppercase tracking-[.22em] text-zinc-400 font-semibold">
           <span id="formHeading">Add New Event</span>
         </p>
-        <p class="text-[11px] text-zinc-500 mt-1">
-          Only events that still need backup are shown below.
+        <p class="text-[11px] text-zinc-500 mt-1"> Only events that still need backup are shown below.
         </p>
       </div>
 
       <button type="button" onclick="loadBackupOverview()"
-              class="text-[9px] tracking-[.18em] uppercase px-3 py-1.5 rounded-full glass-soft text-zinc-400 hover:text-white transition">
-        Refresh
+              class="text-[9px] tracking-[.18em] uppercase px-3 py-1.5 rounded-full glass-soft text-zinc-400 hover:text-white transition"> Refresh
       </button>
     </div>
 
@@ -469,18 +453,15 @@ select.glass-input option {
     <div class="glass-soft rounded-2xl p-4 md:p-5">
       <div class="flex items-center justify-between mb-4">
         <div>
-          <p class="text-[9px] uppercase tracking-[.2em] text-zinc-400 font-semibold">
-            Events Not Yet Backed Up
+          <p class="text-[9px] uppercase tracking-[.2em] text-zinc-400 font-semibold"> Events Not Yet Backed Up
           </p>
-          <p class="text-[10px] text-zinc-600 mt-1">
-            These events still require backup work.
+          <p class="text-[10px] text-zinc-600 mt-1"> These events still require backup work.
           </p>
         </div>
       </div>
 
       <div id="backupEventsList" class="space-y-3">
-        <div class="text-center py-8 text-zinc-600 text-[10px] uppercase tracking-[.15em]">
-          Loading events...
+        <div class="text-center py-8 text-zinc-600 text-[10px] uppercase tracking-[.15em]"> Loading events...
         </div>
       </div>
     </div>
@@ -492,11 +473,9 @@ select.glass-input option {
   <section id="accessPanel" class="hidden glass rounded-3xl p-5 md:p-6 animate-fade-in">
     <div class="flex items-center justify-between gap-4 mb-5">
       <div>
-        <p class="text-[10px] uppercase tracking-[.22em] text-zinc-400 font-semibold">
-          Access Management
+        <p class="text-[10px] uppercase tracking-[.22em] text-zinc-400 font-semibold"> Access Management
         </p>
-        <p class="text-[11px] text-zinc-500 mt-1">
-          Whitelist Gmail accounts that are allowed to add and edit events.
+        <p class="text-[11px] text-zinc-500 mt-1"> Whitelist Gmail accounts that are allowed to add and edit events.
         </p>
       </div>
       <span class="text-[9px] uppercase tracking-[.18em] text-zinc-600">Admin Only</span>
@@ -512,18 +491,15 @@ select.glass-input option {
           <option value="admin">Admin</option>
         </select>
         <button type="button" onclick="addWhitelistedUser()"
-                class="bg-white hover:bg-zinc-200 text-black text-sm font-semibold px-5 py-3 rounded-xl transition">
-          Add
+                class="bg-white hover:bg-zinc-200 text-black text-sm font-semibold px-5 py-3 rounded-xl transition"> Add
         </button>
       </div>
-      <p class="text-[10px] text-zinc-600 mt-3">
-        Non-whitelisted Google accounts can still sign in and view events, but cannot modify anything.
+      <p class="text-[10px] text-zinc-600 mt-3"> Non-whitelisted Google accounts can still sign in and view events, but cannot modify anything.
       </p>
     </div>
 
     <div id="whitelistList" class="space-y-2">
-      <div class="text-center py-6 text-zinc-600 text-[10px] uppercase tracking-[.15em]">
-        Loading accounts...
+      <div class="text-center py-6 text-zinc-600 text-[10px] uppercase tracking-[.15em]"> Loading accounts...
       </div>
     </div>
   </section>
@@ -541,6 +517,10 @@ let editingId = null;
 
 function canEdit() {
   return currentRole === 'admin' || currentRole === 'editor';
+}
+
+function isAdmin() {
+  return currentRole === 'admin';
 }
 
 function accessLabel(role) {
@@ -631,10 +611,10 @@ function backupStatusBadge(status) {
   }
 
   if (status === 'Backed Up') {
-    return `<span class="text-[9px] px-2.5 py-1 rounded-full bg-white/10 text-zinc-200 border border-white/10">✓ Backed Up</span>`;
+    return `<span class="text-[9px] px-2.5 py-1 rounded-full bg-white/10 text-zinc-200 border border-white/10"> Backed Up</span>`;
   }
 
-  return `<span class="text-[9px] px-2.5 py-1 rounded-full bg-white/5 text-zinc-400 border border-white/10">📦 Delivered</span>`;
+  return `<span class="text-[9px] px-2.5 py-1 rounded-full bg-white/5 text-zinc-400 border border-white/10"> Delivered</span>`;
 }
 
 function escapeHtml(value = '') {
@@ -649,35 +629,32 @@ function escapeHtml(value = '') {
 function visibilityBadgeForBackup(event) {
   const visibility = event.visibility || 'public';
   return visibility === 'private'
-    ? `<span class="text-[9px] px-2 py-1 rounded-lg glass-soft text-zinc-400">🔒 Private</span>`
-    : `<span class="text-[9px] px-2 py-1 rounded-lg glass-soft text-zinc-400">🔓 Public</span>`;
+    ? `<span class="text-[9px] px-2 py-1 rounded-lg glass-soft text-zinc-400"> Private</span>`
+    : `<span class="text-[9px] px-2 py-1 rounded-lg glass-soft text-zinc-400"> Public</span>`;
 }
 
 async function loadBackupOverview() {
   const list = document.getElementById('backupEventsList');
+  if (!list) return;
 
-  const { data, error } = await _supabase
-    .from('events')
-    .select('*')
-    .order('shoot_date', { ascending: true });
+  list.innerHTML = `
+    <div class="text-center py-8 text-zinc-600 text-[10px] uppercase tracking-[.15em]"> Loading events...
+    </div>`;
 
-  if (error) {
-    list.innerHTML = `
-      <div class="text-center py-8 text-red-400 text-xs">
-        Unable to load backup events.
-      </div>`;
-    return;
-  }
+  try {
+    const { data, error } = await _supabase
+      .from('events')
+      .select('*')
+      .order('shoot_date', { ascending: true });
+
+    if (error) throw error;
 
   const events = data || [];
-  const pendingEvents = events.filter(e =>
-    e.status === 'Shot' || e.status === 'Backup In Progress'
+  const pendingEvents = events.filter(e => e.status === 'Shot' || e.status === 'Backup In Progress'
   );
-  const pending = events.filter(e =>
-    e.status === 'Shot' || e.status === 'Backup In Progress'
+  const pending = events.filter(e => e.status === 'Shot' || e.status === 'Backup In Progress'
   ).length;
-  const done = events.filter(e =>
-    e.status === 'Backed Up' || e.status === 'Delivered'
+  const done = events.filter(e => e.status === 'Backed Up' || e.status === 'Delivered'
   ).length;
 
   document.getElementById('backupTotal').innerText = events.length;
@@ -687,10 +664,9 @@ async function loadBackupOverview() {
   if (!pendingEvents.length) {
     list.innerHTML = `
       <div class="text-center py-10">
-        <div class="text-2xl opacity-30 mb-2">✓</div>
+        <div class="text-2xl opacity-30 mb-2"></div>
         <p class="text-zinc-500 text-xs">All events are backed up.</p>
-        <p class="text-zinc-700 text-[9px] uppercase tracking-[.15em] mt-2">
-          Nothing needs backup right now
+        <p class="text-zinc-700 text-[9px] uppercase tracking-[.15em] mt-2"> Nothing needs backup right now
         </p>
       </div>`;
     return;
@@ -719,26 +695,29 @@ async function loadBackupOverview() {
             <a href="${escapeHtml(event.drive_url)}"
                target="_blank"
                rel="noopener noreferrer"
-               class="bg-white hover:bg-zinc-200 text-black text-[10px] font-semibold px-3 py-2 rounded-xl transition">
-              Drive ↗
+               class="bg-white hover:bg-zinc-200 text-black text-[10px] font-semibold px-3 py-2 rounded-xl transition"> Drive ↗
             </a>
           ` : ''}
 
           ${canEdit() ? `<button type="button"
                   onclick="editBackupEvent('${event.id}')"
-                  class="glass-soft hover:bg-white/10 text-zinc-300 text-[10px] px-3 py-2 rounded-xl transition">
-            Edit
+                  class="glass-soft hover:bg-white/10 text-zinc-300 text-[10px] px-3 py-2 rounded-xl transition"> Edit
           </button>` : ''}
 
           <button type="button"
                   onclick="showBackupChecklist('${event.id}')"
-                  class="glass-soft hover:bg-white/10 text-zinc-300 text-[10px] px-3 py-2 rounded-xl transition">
-            Checklist
+                  class="glass-soft hover:bg-white/10 text-zinc-300 text-[10px] px-3 py-2 rounded-xl transition"> Checklist
           </button>
         </div>
       </div>
     </div>
-  `).join('');
+  `).join('');  } catch (err) {
+    console.error('Backup overview loading error:', err);
+    list.innerHTML = `
+      <div class="text-center py-8 text-red-400 text-xs"> Unable to load backup events.
+        <p class="text-zinc-600 text-[10px] mt-2">${escapeHtml(err?.message || 'Unknown error')}</p>
+      </div>`;
+  }
 }
 
 async function showBackupChecklist(id) {
@@ -787,8 +766,7 @@ async function showBackupChecklist(id) {
   document.getElementById('backupChecklistContent').innerHTML = `
     <div class="flex items-start justify-between gap-4 mb-5">
       <div>
-        <p class="text-[9px] uppercase tracking-[.2em] text-zinc-500 mb-2">
-          Backup Checklist
+        <p class="text-[9px] uppercase tracking-[.2em] text-zinc-500 mb-2"> Backup Checklist
         </p>
         <h2 class="text-xl font-light">${escapeHtml(event.title)}</h2>
         <p class="text-[10px] text-zinc-500 mt-1">
@@ -973,6 +951,8 @@ async function saveBackup() {
     return;
   }
 
+  syncTimePicker();
+
   let dept = document.getElementById('orgDepartment').value;
   if (dept === 'Other') dept = document.getElementById('orgDepartmentOther').value.trim();
 
@@ -994,66 +974,72 @@ async function saveBackup() {
     notes: document.getElementById('notes').value.trim()
   };
 
-  // Only an admin can change public/private visibility. Editors preserve
-  // whatever visibility the event already has.
+  // Only admins can change visibility.
   if (isAdmin()) {
     payload.visibility = document.getElementById('eventVisibility')?.value || 'public';
-  } else if (!wasEditing) {
-    payload.visibility = 'public';
   }
 
-  let error = null;
-  let updated = null;
+  const saveBtn = document.getElementById('saveBtn');
+  const originalText = saveBtn?.innerText || (wasEditing ? 'Update Event' : 'Save to ShotLog');
 
-  if (wasEditing) {
-    const result = await _supabase
-      .from('events')
-      .update(payload)
-      .eq('id', eventId)
-      .select('*')
-      .single();
+  try {
+    if (saveBtn) {
+      saveBtn.disabled = true;
+      saveBtn.innerText = wasEditing ? 'Updating...' : 'Saving...';
+      saveBtn.classList.add('opacity-60', 'cursor-not-allowed');
+    }
 
-    error = result.error;
-    updated = result.data;
+    let result;
 
-    if (error) {
-      console.error('Supabase update error:', error);
-      alert('Error updating event: ' + error.message);
+    if (wasEditing) {
+      // Update only the selected event. select() confirms that RLS actually
+      // returned the updated row instead of silently updating zero rows.
+      result = await _supabase
+        .from('events')
+        .update(payload)
+        .eq('id', eventId)
+        .select('*')
+        .single();
+    } else {
+      result = await _supabase
+        .from('events')
+        .insert([{ ...payload, checklist: defaultChecklist }])
+        .select('*')
+        .single();
+    }
+
+    if (result.error) {
+      console.error(wasEditing ? 'Supabase update error:' : 'Supabase insert error:', result.error);
+      alert((wasEditing ? 'Error updating event: ' : 'Error adding event: ') + result.error.message);
       return;
     }
 
-    if (!updated) {
-      alert('The event was not updated. Supabase returned no updated row. Check your RLS policy for UPDATE.');
+    if (wasEditing && !result.data) {
+      alert('The event was not updated. Check the UPDATE policy in Supabase for the events table.');
       return;
     }
-  } else {
-    const result = await _supabase
-      .from('events')
-      .insert([{ ...payload, checklist: defaultChecklist }])
-      .select('*')
-      .single();
 
-    error = result.error;
-    if (error) {
-      console.error('Supabase insert error:', error);
-      alert('Error adding event: ' + error.message);
-      return;
+    sessionStorage.removeItem('shotlog_edit_event_id');
+    resetBackupForm();
+
+    if (wasEditing) {
+      alert('Event updated successfully.');
+      window.location.href = 'index.html';
+    } else {
+      alert('Event added successfully.');
+      await loadBackupOverview();
     }
-  }
-
-  sessionStorage.removeItem('shotlog_edit_event_id');
-  resetBackupForm();
-
-  if (wasEditing) {
-    alert('Event updated successfully.');
-    // Return to the dashboard so the updated card is immediately visible.
-    window.location.href = 'index.html';
-  } else {
-    alert('Event added successfully.');
-    await loadBackupOverview();
+  } catch (err) {
+    console.error('Save operation failed:', err);
+    alert((wasEditing ? 'Unable to update event: ' : 'Unable to add event: ') + (err?.message || 'Unknown error'));
+  } finally {
+    if (saveBtn) {
+      saveBtn.disabled = false;
+      saveBtn.innerText = originalText;
+      saveBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+    }
   }
 }
-
 
 async function loadWhitelist() {
   if (!isAdmin()) return;
@@ -1083,8 +1069,7 @@ async function loadWhitelist() {
         <p class="text-[9px] uppercase tracking-[.16em] text-zinc-600 mt-1">${escapeHtml(user.role)}</p>
       </div>
       <button type="button" onclick="removeWhitelistedUser('${user.id}', '${escapeHtml(user.email)}')"
-              class="text-[9px] uppercase tracking-[.16em] text-red-400 hover:text-red-300 transition px-3 py-2 rounded-xl glass-soft shrink-0">
-        Remove
+              class="text-[9px] uppercase tracking-[.16em] text-red-400 hover:text-red-300 transition px-3 py-2 rounded-xl glass-soft shrink-0"> Remove
       </button>
     </div>
   `).join('');
@@ -1144,33 +1129,56 @@ async function signOut() {
   await _supabase.auth.signOut();
 }
 
-_supabase.auth.onAuthStateChange(async (event, session) => {
+let authRequestInProgress = false;
+
+async function handleBackupSession(session) {
+  if (!session) {
+    window.location.href = 'index.html';
+    return;
+  }
 
   const userGreeting = document.getElementById('userGreeting');
+  const userName =
+    session.user?.user_metadata?.full_name ||
+    session.user?.user_metadata?.name ||
+    session.user?.email ||
+    'User';
 
-  if (session) {
+  if (userGreeting) {
+    userGreeting.innerHTML =
+      `Welcome, <span class="text-white font-medium">${escapeHtml(userName)}</span>`;
+  }
 
-    const userName =
-      session.user?.user_metadata?.full_name ||
-      session.user?.user_metadata?.name ||
-      session.user?.email ||
-      'User';
+  await loadAccessRole(session);
+  await loadBackupOverview();
 
-    if (userGreeting) {
-      userGreeting.innerHTML =
-        `Welcome, <span class="text-white font-medium">${escapeHtml(userName)}</span>`;
+  const editId = sessionStorage.getItem('shotlog_edit_event_id');
+  if (editId && canEdit()) {
+    sessionStorage.removeItem('shotlog_edit_event_id');
+    await editBackupEvent(editId);
+  }
+}
+
+_supabase.auth.onAuthStateChange((event, session) => {
+  if (authRequestInProgress) return;
+  authRequestInProgress = true;
+  handleBackupSession(session)
+    .catch(err => console.error('Backup auth initialization error:', err))
+    .finally(() => { authRequestInProgress = false; });
+});
+
+(async function initializeBackupAuth() {
+  try {
+    const { data, error } = await _supabase.auth.getSession();
+    if (error) throw error;
+
+    if (!authRequestInProgress) {
+      authRequestInProgress = true;
+      await handleBackupSession(data.session);
+      authRequestInProgress = false;
     }
-
-    await loadAccessRole(session);
-    loadBackupOverview();
-
-    const editId = sessionStorage.getItem('shotlog_edit_event_id');
-    if (editId && canEdit()) {
-      sessionStorage.removeItem('shotlog_edit_event_id');
-      setTimeout(() => editBackupEvent(editId), 250);
-    }
-
-  } else {
+  } catch (err) {
+    console.error('Unable to initialize backup page:', err);
     window.location.href = 'index.html';
   }
 });

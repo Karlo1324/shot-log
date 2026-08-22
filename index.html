@@ -202,8 +202,7 @@ to access your archive.</p>
 3.45 1.18 4.94l2.85-2.22.81-.62z" fill="#FBBC05"></path>
 <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45
 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"></path>
-</svg>
-          Sign in with Google
+</svg> Sign in with Google
     </button>
 </div>
 </div>
@@ -236,11 +235,9 @@ Archive</p>
 </div>
 <div class="flex items-center gap-2">
 <span id="accessBadge" class="inline-flex text-[8px] tracking-[.16em] uppercase px-2.5 py-1.5 rounded-full glass-soft text-zinc-500"></span>
-<a class="text-[9px] tracking-[.18em] uppercase px-3 py-1.5 rounded-full glass-soft text-zinc-400 hover:text-white transition" href="backup.html">
-            Backup
+<a class="text-[9px] tracking-[.18em] uppercase px-3 py-1.5 rounded-full glass-soft text-zinc-400 hover:text-white transition" href="backup.html"> Backup
           </a>
-<button class="text-[9px] tracking-[.18em] uppercase px-3 py-1.5 rounded-full glass-soft text-zinc-400 hover:text-white transition" onclick="signOut()">
-            Sign Out
+<button class="text-[9px] tracking-[.18em] uppercase px-3 py-1.5 rounded-full glass-soft text-zinc-400 hover:text-white transition" onclick="signOut()"> Sign Out
           </button>
 </div>
 </header>
@@ -268,8 +265,7 @@ Event</p>
 <h2 class="text-lg font-medium" id="nextEventTitle"></h2>
 <p class="text-xs text-zinc-400 mt-1" id="nextEventMeta"></p>
 </div>
-<button class="shrink-0 bg-white text-black hover:bg-zinc-200 px-4 py-2.5 rounded-xl text-xs font-semibold transition active:scale-[.98]" id="nextEventBtn">
-            View
+<button class="shrink-0 bg-white text-black hover:bg-zinc-200 px-4 py-2.5 rounded-xl text-xs font-semibold transition active:scale-[.98]" id="nextEventBtn"> View
        </button>
 </div>
 </section>
@@ -278,8 +274,8 @@ Event</p>
 <div class="flex text-xs font-medium gap-6 overflow-x-auto">
 <button class="pb-3 text-white border-b-2 border-white whitespace-nowrap" id="tab-all" onclick="setFilter('all')">All Events</button>
 <button class="pb-3 text-zinc-500 hover:text-zinc-300 whitespace-nowrap" id="tab-needs_backup" onclick="setFilter('needs_backup')">⚠️ Needs Backup</button>
-<button class="pb-3 text-zinc-500 hover:text-zinc-300 whitespace-nowrap" id="tab-upcoming" onclick="setFilter('upcoming')">📅 Upcoming</button>
-<button class="pb-3 text-zinc-500 hover:text-zinc-300 whitespace-nowrap" id="tab-past" onclick="setFilter('past')">📂 Past / Backed Up</button>
+<button class="pb-3 text-zinc-500 hover:text-zinc-300 whitespace-nowrap" id="tab-upcoming" onclick="setFilter('upcoming')"> Upcoming</button>
+<button class="pb-3 text-zinc-500 hover:text-zinc-300 whitespace-nowrap" id="tab-past" onclick="setFilter('past')"> Past / Backed Up</button>
 </div>
 </div>
 <!-- Events List -->
@@ -298,8 +294,7 @@ Event</p>
 <div id="modalContent"></div>
 </div>
 </div>
-<script>
-   const SUPABASE_URL = 'https://mfgifshxxikabamzoatf.supabase.co';
+<script> const SUPABASE_URL = 'https://mfgifshxxikabamzoatf.supabase.co';
    const SUPABASE_KEY = 'sb_publishable_7_V6DnFz8WDy9bMk9weVFg_7nHLZtsQ';
    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
    const eventsList = document.getElementById('eventsList');
@@ -439,25 +434,25 @@ function organizationMatches(event, { department = '', subUnit = '' } = {}) {
 
    function statusBadge(status) {
        if (status === 'Upcoming') {
-           return `<span class="text-[10px] px-2.5 py-1 rounded-full bg-white/10 text-zinc-200 border border-white/10">📅 Upcoming</span>`;
+           return `<span class="text-[10px] px-2.5 py-1 rounded-full bg-white/10 text-zinc-200 border border-white/10"> Upcoming</span>`;
        }
        if (status === 'Event Ongoing') {
-           return `<span class="text-[10px] px-2.5 py-1 rounded-full bg-white/10 text-zinc-200 border border-white/10">🎥 Event Ongoing</span>`;
+           return `<span class="text-[10px] px-2.5 py-1 rounded-full bg-white/10 text-zinc-200 border border-white/10"> Event Ongoing</span>`;
        }
        if (status === 'Shot') {
            return `<span class="text-[10px] px-2.5 py-1 rounded-full bg-white text-black
-font-bold uppercase tracking-wider">     Needs Backup</span>`;
+font-bold uppercase tracking-wider"> Needs Backup</span>`;
        }
        if (status === 'Backup In Progress') {
            return `<span class="text-[10px] px-2.5 py-1 rounded-full bg-white/10
-text-zinc-200 border border-white/10">     In Progress</span>`;
+text-zinc-200 border border-white/10"> In Progress</span>`;
        }
        if (status === 'Backed Up') {
            return `<span class="text-[10px] px-2.5 py-1 rounded-full bg-white/10
-text-zinc-200 border border-white/10">✓ Backed Up</span>`;
+text-zinc-200 border border-white/10"> Backed Up</span>`;
        }
        return `<span class="text-[10px] px-2.5 py-1 rounded-full bg-white/5
-text-zinc-400 border border-white/10">     Delivered</span>`;
+text-zinc-400 border border-white/10"> Delivered</span>`;
    }
 
 
@@ -465,42 +460,54 @@ text-zinc-400 border border-white/10">     Delivered</span>`;
        if (!canEdit()) return '';
        const visibility = event.visibility || 'public';
        return visibility === 'private'
-         ? `<span class="text-[9px] px-2 py-1 rounded-lg glass-soft text-zinc-400">🔒 Private</span>`
-         : `<span class="text-[9px] px-2 py-1 rounded-lg glass-soft text-zinc-400">🔓 Public</span>`;
+         ? `<span class="text-[9px] px-2 py-1 rounded-lg glass-soft text-zinc-400"> Private</span>`
+         : `<span class="text-[9px] px-2 py-1 rounded-lg glass-soft text-zinc-400"> Public</span>`;
    }
 
    async function fetchEvents() {
-       const { data, error } = await _supabase
-           .from('events')
-           .select('*')
-           .order('shoot_date', { ascending: false });
+    if (eventsList) {
+      eventsList.innerHTML = `
+        <div class="glass rounded-3xl text-center py-10">
+          <p class="text-zinc-500 text-xs uppercase tracking-[.18em]">Loading events...</p>
+        </div>`;
+    }
 
+    try {
+      let query = _supabase
+        .from('events')
+        .select('*')
+        .order('shoot_date', { ascending: false });
 
-       if (error) {
-           console.error('Error fetching events:', error);
-           if (eventsList) {
-             eventsList.innerHTML = `
-               <div class="glass rounded-3xl text-center py-10">
-                 <p class="text-red-400 text-xs">Unable to load events.</p>
-                 <p class="text-zinc-600 text-[10px] mt-2">${escapeHtml(error.message)}</p>
-               </div>`;
-           }
-           return;
-       }
+      if (!canEdit()) {
+        query = query.eq('visibility', 'public');
+      }
 
+      const { data, error } = await query;
 
-       allEvents = (data || []).map(e => ({
-           ...e,
-           organization: parseOrganization(e.organization),
-      checklist: normalizeChecklist(e.checklist)
-    }));
+      if (error) throw error;
 
+      allEvents = (data || []).map(e => ({
+        ...e,
+        organization: parseOrganization(e.organization),
+        checklist: normalizeChecklist(e.checklist)
+      }));
 
-    updateDashboardStats();
-    renderNextEvent();
-    renderEvents();
-    renderRecentEvents();
+      updateDashboardStats();
+      renderNextEvent();
+      renderEvents();
+      renderRecentEvents();
+    } catch (err) {
+      console.error('Error fetching events:', err);
+      if (eventsList) {
+        eventsList.innerHTML = `
+          <div class="glass rounded-3xl text-center py-10">
+            <p class="text-red-400 text-xs">Unable to load events.</p>
+            <p class="text-zinc-600 text-[10px] mt-2">${escapeHtml(err?.message || 'Unknown error')}</p>
+          </div>`;
+      }
+    }
 }
+
 
 
 function updateDashboardStats() {
@@ -618,22 +625,12 @@ events found</p>
             ? `<img src="${escapeHtml(event.cover_url)}" alt="" class="w-16 h-16 md:w-20
 md:h-20 rounded-2xl object-cover border border-white/10 shrink-0">`
             : `<div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl glass-soft shrink-0 flex
-items-center justify-center text-xl text-zinc-600">     📷</div>`;
+items-center justify-center text-xl text-zinc-600">     </div>`;
         const time = formatTime(event.shoot_time);
         const meta = [
-            `<script>
-import { createIcons, Calendars } from 'lucide';
-
-createIcons({
-  icons: {
-    Calendars
-  }
-});
-</script>
-
-<i data-lucide="calendars"></i>  ${formatDate(event.shoot_date)}`,
-            time ? `🕐 ${time}` : '',
-            event.location ? `📍 ${escapeHtml(event.location)}` : ''
+            ` ${formatDate(event.shoot_date)}`,
+            time ? ` ${time}` : '',
+            event.location ? ` ${escapeHtml(event.location)}` : ''
         ].filter(Boolean).join(' <span class="text-zinc-700 mx-1">•</span> ');
 
 
@@ -671,8 +668,7 @@ text-zinc-400">
                       ${escapeHtml(event.event_type || 'School Activity')}
                  </span>
                  <span class="text-[10px] px-2 py-1 rounded-lg glass-soft
-text-zinc-500">
-                      Checklist ${progress.done}/${progress.total}
+text-zinc-500"> Checklist ${progress.done}/${progress.total}
                  </span>
                  ${orgChips}
                  ${visibilityBadge(event)}
@@ -685,8 +681,7 @@ onclick="event.stopPropagation()">
                <a href="${escapeHtml(event.drive_url || '#')}" target="_blank"
 rel="noopener noreferrer"
                  class="bg-white hover:bg-zinc-200 text-black text-[11px] font-semibold
-px-3 py-2 rounded-xl text-center transition active:scale-[.98]">
-                 Drive ↗
+px-3 py-2 rounded-xl text-center transition active:scale-[.98]"> Drive ↗
                </a>
               </div>
             </div>
@@ -838,7 +833,7 @@ escapeHtml(org.department) : 'Not set'}</p>
            ${canEdit() ? `
              <div class="glass-soft rounded-2xl p-3">
                <p class="text-[9px] uppercase tracking-wider text-zinc-600">Visibility</p>
-               <p class="text-xs text-zinc-300 mt-1">${event.visibility === 'private' ? '🔒 Private' : '🔓 Public'}</p>
+               <p class="text-xs text-zinc-300 mt-1">${event.visibility === 'private' ? ' Private' : ' Public'}</p>
              </div>
            ` : ''}
          </div>
@@ -873,8 +868,7 @@ escapeHtml(org.department) : 'Not set'}</p>
            <div class="flex items-center gap-2">
               ${event.visibility !== 'private' || canEdit() ? `
                 <a href="${escapeHtml(event.drive_url)}" target="_blank" rel="noopener noreferrer"
-                  class="bg-white hover:bg-zinc-200 text-black text-xs font-semibold px-4 py-2.5 rounded-xl transition">
-                  Open Drive ↗
+                  class="bg-white hover:bg-zinc-200 text-black text-xs font-semibold px-4 py-2.5 rounded-xl transition"> Open Drive ↗
                 </a>
               ` : ''}
            </div>
@@ -964,45 +958,83 @@ async function signOut() {
 }
 
 
-_supabase.auth.onAuthStateChange(async (event, session) => {
+let authRequestInProgress = false;
+let handledUserId = null;
+
+async function handleAuthSession(session) {
     const loginCard = document.getElementById('loginCard');
     const splash = document.getElementById('splashScreen');
     const greetingEl = document.getElementById('userGreeting');
-    if (splash) {
-          splash.classList.add('opacity-0', 'pointer-events-none');
-          setTimeout(() => splash.remove(), 700);
-    }
 
     if (session) {
-          if (loginCard) loginCard.classList.add('hidden');
+        if (loginCard) loginCard.classList.add('hidden');
 
-          const userName = session.user?.user_metadata?.full_name
-                          || session.user?.user_metadata?.name
-                          || session.user?.email
-                          || 'User';
+        const userName = session.user?.user_metadata?.full_name
+                        || session.user?.user_metadata?.name
+                        || session.user?.email
+                        || 'User';
 
-          if (greetingEl) {
-              greetingEl.innerHTML = `Welcome, <span class="text-white font-medium">${escapeHtml(userName)}</span>`;
-          }
+        if (greetingEl) {
+            greetingEl.innerHTML = `Welcome, <span class="text-white font-medium">${escapeHtml(userName)}</span>`;
+        }
 
-          await loadAccessRole(session);
-          fetchEvents();
+        await loadAccessRole(session);
+        await fetchEvents();
+
+        if (splash) {
+            splash.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => splash.remove(), 500);
+        }
     } else {
-          currentRole = 'viewer';
-          currentSession = null;
-          if (loginCard) loginCard.classList.remove('hidden');
-          if (greetingEl) {
-              greetingEl.innerText = 'School Photography Archive';
-          }
+        currentRole = 'viewer';
+        currentSession = null;
+        allEvents = [];
+
+        if (loginCard) loginCard.classList.remove('hidden');
+        if (greetingEl) {
+            greetingEl.innerText = 'School Photography Archive';
+        }
+
+        if (splash) {
+            splash.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => splash.remove(), 500);
+        }
     }
-   });
+}
 
+_supabase.auth.onAuthStateChange((event, session) => {
+    // Do not await Supabase auth callbacks directly; this prevents auth-state
+    // deadlocks while RPC/data requests are running.
+    if (authRequestInProgress) return;
+    authRequestInProgress = true;
+    handleAuthSession(session)
+      .catch(err => console.error('Auth initialization error:', err))
+      .finally(() => { authRequestInProgress = false; });
+});
 
-   // Fallback timer to hide splash screen if auth resolution takes long
-   setTimeout(() => {
+(async function initializeAuth() {
+    try {
+        const { data, error } = await _supabase.auth.getSession();
+        if (error) throw error;
+        if (!authRequestInProgress) {
+            authRequestInProgress = true;
+            await handleAuthSession(data.session);
+            authRequestInProgress = false;
+        }
+    } catch (err) {
+        console.error('Unable to initialize authentication:', err);
+        const splash = document.getElementById('splashScreen');
+        const loginCard = document.getElementById('loginCard');
+        if (splash) splash.remove();
+        if (loginCard) loginCard.classList.remove('hidden');
+    }
+})();
+
+// Safety fallback: never leave the splash screen blocking the page.
+setTimeout(() => {
     const splash = document.getElementById('splashScreen');
     if (splash) splash.remove();
-   }, 2500);
+}, 4000);
  </script>
 </body>
 </html>
