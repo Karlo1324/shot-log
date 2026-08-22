@@ -167,9 +167,21 @@ select.glass-input option {
 
 
    .modal-backdrop {
-       background: rgba(0,0,0,.72);
-       backdrop-filter: blur(12px);
-       -webkit-backdrop-filter: blur(12px);
+       background: rgba(0,0,0,.86);
+       backdrop-filter: blur(8px);
+       -webkit-backdrop-filter: blur(8px);
+       isolation: isolate;
+   }
+
+   #eventModalPanel {
+       background: #090909 !important;
+       border: 1px solid rgba(255,255,255,.12);
+       box-shadow: 0 24px 80px rgba(0,0,0,.65);
+       isolation: isolate;
+   }
+
+   #eventModalPanel #modalContent {
+       background: #090909;
    }
 
 
@@ -220,7 +232,23 @@ select.glass-input option {
   .modal-backdrop {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    background: rgba(0,0,0,.78);
+    background: rgba(0,0,0,.88);
+  }
+
+  #eventModalPanel {
+    background: #090909 !important;
+    border-radius: 20px !important;
+    box-shadow: 0 18px 55px rgba(0,0,0,.7);
+  }
+
+  #eventModalPanel #modalContent {
+    background: #090909;
+  }
+
+  #eventModalPanel .sticky {
+    background: #090909 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 }
 
