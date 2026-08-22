@@ -272,17 +272,91 @@ Event</p>
 
 
 <!-- Filters -->
-<div class="glass-soft rounded-2xl px-3 pt-3">
 <div class="flex text-xs font-medium gap-6 overflow-x-auto">
-<button class="pb-3 text-white border-b-2 border-white whitespace-nowrap" id="tab-all" onclick="setFilter('all')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
-    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wallet-minimal-icon lucide-wallet-minimal"><path d="M17 14h.01"/><path d="M7 7h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14"/>
-</svg>All Events</button>
-<button class="pb-3 text-zinc-500 hover:text-zinc-300 whitespace-nowrap" id="tab-needs_backup" onclick="setFilter('needs_backup')"> Needs Backup</button>
-<button class="pb-3 text-zinc-500 hover:text-zinc-300 whitespace-nowrap" id="tab-upcoming" onclick="setFilter('upcoming')"> Upcoming</button>
-<button class="pb-3 text-zinc-500 hover:text-zinc-300 whitespace-nowrap" id="tab-past" onclick="setFilter('past')"> Past / Backed Up</button>
-</div>
-</div>
 
+  <button
+    class="pb-3 text-white border-b-2 border-white whitespace-nowrap flex items-center gap-2"
+    id="tab-all"
+    onclick="setFilter('all')"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg"
+         width="16" height="16"
+         viewBox="0 0 24 24"
+         fill="none"
+         stroke="currentColor"
+         stroke-width="2"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+      <path d="M17 14h.01"/>
+      <path d="M7 7h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14"/>
+    </svg>
+    All Events
+  </button>
+
+  <button
+    class="pb-3 text-zinc-500 hover:text-zinc-300 whitespace-nowrap flex items-center gap-2"
+    id="tab-needs_backup"
+    onclick="setFilter('needs_backup')"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg"
+         width="16" height="16"
+         viewBox="0 0 24 24"
+         fill="none"
+         stroke="currentColor"
+         stroke-width="2"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+      <path d="M12 16h.01"/>
+      <path d="M12 8v4"/>
+      <path d="m15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/>
+    </svg>
+    Needs Backup
+  </button>
+
+  <button
+    class="pb-3 text-zinc-500 hover:text-zinc-300 whitespace-nowrap flex items-center gap-2"
+    id="tab-upcoming"
+    onclick="setFilter('upcoming')"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg"
+         width="16" height="16"
+         viewBox="0 0 24 24"
+         fill="none"
+         stroke="currentColor"
+         stroke-width="2"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+      <path d="m19 16-3 3"/>
+      <path d="M2 21a8 8 0 0 1 12.664-6.5"/>
+      <path d="M22 19h-6l3 3"/>
+      <circle cx="10" cy="8" r="5"/>
+    </svg>
+    Upcoming
+  </button>
+
+  <button
+    class="pb-3 text-zinc-500 hover:text-zinc-300 whitespace-nowrap flex items-center gap-2"
+    id="tab-past"
+    onclick="setFilter('past')"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg"
+         width="16" height="16"
+         viewBox="0 0 24 24"
+         fill="none"
+         stroke="currentColor"
+         stroke-width="2"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+      <path d="M16 14v2.2l1.6 1"/>
+      <path d="M16 4h2a2 2 0 0 1 2 2v.832"/>
+      <path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h2"/>
+      <circle cx="16" cy="16" r="6"/>
+      <rect x="8" y="2" width="8" height="4" rx="1"/>
+    </svg>
+    Past / Backed Up
+  </button>
+
+</div>
 
 <!-- Events List -->
 <div class="space-y-3" id="eventsList"></div>
