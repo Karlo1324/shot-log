@@ -239,8 +239,8 @@ select.glass-input option {
                   class="glass-input w-full rounded-xl px-4 py-3 sm:py-3.5 text-sm focus:outline-none transition">
             <option value="Upcoming"> Upcoming</option>
             <option value="Event Ongoing"> Event Ongoing</option>
-            <option value="Shot" selected>⚠️ Needs Backup</option>
-            <option value="Backup In Progress">⏳ Backup In Progress</option>
+            <option value="Shot" selected>Needs Backup</option>
+            <option value="Backup In Progress">Backup In Progress</option>
             <option value="Backed Up"> Backed Up</option>
             <option value="Delivered"> Delivered</option>
           </select>
@@ -603,11 +603,11 @@ function syncTimePicker() {
 
 function backupStatusBadge(status) {
   if (status === 'Shot') {
-    return `<span class="text-[9px] px-2.5 py-1 rounded-full bg-white text-black font-bold uppercase tracking-wider">⚠️ Needs Backup</span>`;
+    return `<span class="text-[9px] px-2.5 py-1 rounded-full bg-white text-black font-bold uppercase tracking-wider">Needs Backup</span>`;
   }
 
   if (status === 'Backup In Progress') {
-    return `<span class="text-[9px] px-2.5 py-1 rounded-full bg-white/10 text-zinc-200 border border-white/10">⏳ In Progress</span>`;
+    return `<span class="text-[9px] px-2.5 py-1 rounded-full bg-white/10 text-zinc-200 border border-white/10">In Progress</span>`;
   }
 
   if (status === 'Backed Up') {
