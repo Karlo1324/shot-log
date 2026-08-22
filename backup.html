@@ -612,6 +612,16 @@ const SUPABASE_URL = 'https://mfgifshxxikabamzoatf.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_7_V6DnFz8WDy9bMk9weVFg_7nHLZtsQ';
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+function clearShotLogEventCache() {
+  try {
+    Object.keys(localStorage)
+      .filter(key => key.startsWith('shotlog_events_'))
+      .forEach(key => localStorage.removeItem(key));
+  } catch (err) {
+    console.warn('Unable to clear event cache:', err);
+  }
+}
+
 let currentRole = 'viewer';
 let currentSession = null;
 let editingId = null;
@@ -920,6 +930,7 @@ async function updateBackupChecklist(eventId, key, checked) {
     return;
   }
 
+  clearShotLogEventCache();
   loadBackupOverview();
 }
 
@@ -1120,6 +1131,8 @@ async function saveBackup() {
       return;
     }
 
+    // Invalidate dashboard cache so index.html fetches the new version immediately.
+    clearShotLogEventCache();
     sessionStorage.removeItem('shotlog_edit_event_id');
     resetBackupForm();
 

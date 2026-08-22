@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 
 <html lang="en">
 <head>
@@ -616,13 +616,85 @@ text-zinc-400 border border-white/10"> Delivered</span>`;
          : `<span class="text-[9px] px-2 py-1 rounded-lg glass-soft text-zinc-400"> Public</span>`;
    }
 
-   async function fetchEvents() {
-    if (eventsList) {
-      eventsList.innerHTML = `
+   // Local cache: show recent data immediately, then refresh from Supabase in the background.
+   // Public and admin/editor caches are separated so private events are never reused for viewers.
+   const EVENTS_CACHE_VERSION = 'v3';
+   const EVENTS_CACHE_TTL = 5 * 60 * 1000;
+
+   function eventsCacheKey() {
+     const userId = currentSession?.user?.id || 'public';
+     const scope = canEdit() ? `editor_${userId}` : 'public';
+     return `shotlog_events_${EVENTS_CACHE_VERSION}_${scope}`;
+   }
+
+   function readEventsCache() {
+     try {
+       const raw = localStorage.getItem(eventsCacheKey());
+       if (!raw) return null;
+       const cached = JSON.parse(raw);
+       if (!cached || !Array.isArray(cached.events)) return null;
+       return cached;
+     } catch (err) {
+       console.warn('Unable to read event cache:', err);
+       return null;
+     }
+   }
+
+   function writeEventsCache(events) {
+     try {
+       localStorage.setItem(eventsCacheKey(), JSON.stringify({
+         cachedAt: Date.now(),
+         events
+       }));
+     } catch (err) {
+       console.warn('Unable to write event cache:', err);
+     }
+   }
+
+   function clearEventsCache() {
+     try {
+       Object.keys(localStorage)
+         .filter(key => key.startsWith('shotlog_events_'))
+         .forEach(key => localStorage.removeItem(key));
+     } catch (err) {
+       console.warn('Unable to clear event cache:', err);
+     }
+   }
+
+   function renderEventData(data) {
+     allEvents = (data || []).map(e => ({
+       ...e,
+       organization: parseOrganization(e.organization),
+       checklist: normalizeChecklist(e.checklist)
+     }));
+
+     updateDashboardStats();
+     renderNextEvent();
+     renderEvents();
+     renderRecentEvents();
+   }
+
+   async function fetchEvents(options = {}) {
+     const { useCache = true, silent = false } = options;
+     const cached = useCache ? readEventsCache() : null;
+     let renderedCache = false;
+
+     if (cached?.events?.length || cached?.events?.length === 0) {
+       renderEventData(cached.events);
+       renderedCache = true;
+
+       if (!silent && eventsList) {
+         const age = Date.now() - Number(cached.cachedAt || 0);
+         if (age <= EVENTS_CACHE_TTL) {
+           // Cached data is good enough to display immediately; network refresh happens below.
+         }
+       }
+     } else if (!silent && eventsList) {
+       eventsList.innerHTML = `
         <div class="glass rounded-3xl text-center py-10">
           <p class="text-zinc-500 text-xs uppercase tracking-[.18em]">Loading events...</p>
         </div>`;
-    }
+     }
 
     try {
       let query = _supabase
@@ -635,22 +707,15 @@ text-zinc-400 border border-white/10"> Delivered</span>`;
       }
 
       const { data, error } = await query;
-
       if (error) throw error;
 
-      allEvents = (data || []).map(e => ({
-        ...e,
-        organization: parseOrganization(e.organization),
-        checklist: normalizeChecklist(e.checklist)
-      }));
-
-      updateDashboardStats();
-      renderNextEvent();
-      renderEvents();
-      renderRecentEvents();
+      writeEventsCache(data || []);
+      renderEventData(data || []);
     } catch (err) {
       console.error('Error fetching events:', err);
-      if (eventsList) {
+
+      // Keep cached content visible when the network is unavailable.
+      if (!renderedCache && eventsList) {
         eventsList.innerHTML = `
           <div class="glass rounded-3xl text-center py-10">
             <p class="text-red-400 text-xs">Unable to load events.</p>
